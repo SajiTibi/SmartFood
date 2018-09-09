@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int NUM_PAGES = 3;
+    private static  int numberOfPages;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     static UserModel loggedUser;
@@ -17,13 +17,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_page);
+
         Bundle extras = getIntent().getExtras();
         int userID = extras.getInt(Configs.USER_ID);
         int userType = extras.getInt(Configs.USER_TYPE);
         String emailAddress = extras.getString(Configs.USER_EMAIL);
         loggedUser = new UserModel(userID, emailAddress, userType);
         if (userType == Configs.USER_FOODIE_ID) {
-            setContentView(R.layout.foodie_home_page);
+            numberOfPages = 2;
+        }else{
+            numberOfPages= 3;
         }
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -37,21 +41,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+
             switch (position) {
-                case 1:
+                case 0:
                     return new FoodMap();
+                case 1:
+                    return new AboutTab();
                 case 2:
                     return new CookerRecipes();
-                case 3:
-                    // about not showing maybe count starts from 0
-                    return new AboutTab();
             }
             return new FoodMap();
         }
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return numberOfPages;
         }
     }
 }

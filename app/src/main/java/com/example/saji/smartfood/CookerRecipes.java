@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,20 +38,27 @@ public class CookerRecipes extends Fragment {
         recipeRecyclerView = view.findViewById(R.id.recipes_recycler_view);
         recipeModelArrayList = new ArrayList<>();
         loadRecipes();
-
         recipesRecyclerViewAdapter = new RecipesAdapter(getContext(),recipeModelArrayList);
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recipeRecyclerView.setAdapter(recipesRecyclerViewAdapter);
+        final Button addRecipeButton = view.findViewById(R.id.add_recipe);
+        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddRecipeDialog addRecipeDialog = new AddRecipeDialog();
+                addRecipeDialog.show(getFragmentManager(),"AddRecipeDialog");
+            }
+        });
         return  view ;
     }
-
+    // TODO maybe to add ability to save recipes locale instead of loading each time from server
     private void loadRecipes() {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .RECIPES_RETRIEVAL_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    // we got respone as json array within nesed json array so we iterate
+                    // we got response as json array within nesed json array so we iterate
                     // throught them all to get all recipes
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
@@ -72,9 +80,7 @@ public class CookerRecipes extends Fragment {
                                     .loggedUser,recipeDescription,recipePrice);
                             recipeModelArrayList.add(newRecipe);
                             recipesRecyclerViewAdapter.notifyDataSetChanged();
-
-                            System.out.println("item added");
-                        }
+                            }
                     }
                 }catch (JSONException e){
 

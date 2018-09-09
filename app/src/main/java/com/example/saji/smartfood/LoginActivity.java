@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                         // forwarding userID and user type to main screen activity
                         int userID = jsonResponse.getInt(Configs.USER_ID);
                         int userType = jsonResponse.getInt(Configs.USER_TYPE);
-                        if(userType==Configs.USER_FOODIE_ID) {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             // passing user information to main activity
                             intent.putExtra(Configs.USER_ID, userID);
@@ -84,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             LoginActivity.this.startActivity(intent);
                             finish(); // to prevent user from coming back to login page when
                             // pressing back button
-                        }
+
                     }
 
                 } catch (JSONException e) {
