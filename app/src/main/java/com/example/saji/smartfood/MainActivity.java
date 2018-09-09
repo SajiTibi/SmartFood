@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     return new CookerRecipes();
                 case 3:
+                    // about not showing maybe count starts from 0
                     return new AboutTab();
             }
             return new FoodMap();
