@@ -68,14 +68,23 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    System.out.println("response" + response);
+                    System.out.println("response: " + response);
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
-                        int userId = jsonResponse.getInt("user_id");
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("uid", userId);
-                        LoginActivity.this.startActivity(intent);
+                        // forwarding userID and user type to main screen activity
+                        int userID = jsonResponse.getInt(Configs.USER_ID);
+                        int userType = jsonResponse.getInt(Configs.USER_TYPE);
+                        if(userType==Configs.USER_FOODIE_ID) {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            // passing user information to main activity
+                            intent.putExtra(Configs.USER_ID, userID);
+                            intent.putExtra(Configs.USER_EMAIL, mEmailView.getText().toString());
+                            intent.putExtra(Configs.USER_TYPE,userType);
+                            LoginActivity.this.startActivity(intent);
+                            finish(); // to prevent user from coming back to login page when
+                            // pressing back button
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -87,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
         queue.add(sr);
     }
-
 
 }
 

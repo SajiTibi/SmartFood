@@ -7,19 +7,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterRequest extends StringRequest {
-    private static final String REGISTER_REQUEST_URL = "https://silicotic-vent.000webhostapp.com/Register.php";
     private String email;
     private String password;
-    public RegisterRequest(String email, String password, Response.Listener<String> listener) {
-        super(Method.POST, REGISTER_REQUEST_URL, listener, null);
+    private int userType;
+    RegisterRequest(String email, String password, int userType, Response.Listener<String>
+            listener) {
+        super(Method.POST, Configs.REGISTER_REQUEST_URL, listener, null);
         this.email=email;
         this.password=password;
+        this.userType=userType;
     }
     @Override
     protected Map<String, String> getParams() {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("email_address",email);
-        params.put("user_password", password);
+        params.put(Configs.USER_EMAIL, email);
+        params.put(Configs.USER_PASSWORD, password);
+        params.put(Configs.USER_TYPE, String.valueOf(userType));
         return params;
     }
 }

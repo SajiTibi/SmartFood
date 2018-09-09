@@ -7,6 +7,7 @@ if (mysqli_connect_errno($con)) { echo "Failed to connect to MySQL: " . mysqli_c
 
     $email_address = $_POST["email_address"];
     $user_password = $_POST["user_password"];
+    $user_type = $_POST["user_type"];
     $sql = "SELECT * FROM users_table WHERE email_address = '$email_address'";
     $result = $con->query($sql);
 
@@ -16,8 +17,8 @@ if (mysqli_connect_errno($con)) { echo "Failed to connect to MySQL: " . mysqli_c
     	echo json_encode($response);
 	exit(1);
     }
-    $statement = mysqli_prepare($con, "INSERT INTO users_table (email_address, user_password) VALUES (?,?)");
-    mysqli_stmt_bind_param($statement, "ss", $email_address,  $user_password);
+    $statement = mysqli_prepare($con, "INSERT INTO users_table (email_address, user_password,user_type) VALUES (?,?,?)");
+    mysqli_stmt_bind_param($statement, "ssi", $email_address,  $user_password,$user_type);
     mysqli_stmt_execute($statement);
     
     $response = array();

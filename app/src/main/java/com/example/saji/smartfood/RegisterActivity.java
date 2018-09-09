@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,11 +33,14 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword1 = findViewById(R.id.registration_pwd_1);
         mPassword2 = findViewById(R.id.registration_pwd_2);
         Button registerButton = findViewById(R.id.register_button);
+        RadioGroup userType = findViewById(R.id.user_type_group);
+        final int selectedButtonID =userType.getCheckedRadioButtonId();
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
-                    attemptRegister();
+                    // since there is only two selections we will pass 1 if foodie, 0 if cooker
+                    attemptRegister(selectedButtonID==R.id.foodie_button?1:0);
                 } else {
                     Snackbar.make(view, "Make sure both passwords match", Snackbar.LENGTH_SHORT).show();
                 }
@@ -44,9 +48,13 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void attemptRegister() {
+    /**
+     * tries to register user
+     * @param userType 1 is foodie, 0 is cooker
+     */
+    private void attemptRegister(int userType) {
         StringRequest sr = new RegisterRequest(mEmail.getText().toString(), mPassword1.getText()
-                .toString(), new Response.Listener<String>() {
+                .toString(),userType, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
