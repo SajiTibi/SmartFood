@@ -1,6 +1,6 @@
 package com.example.saji.smartfood;
 
-public class RecipeModel {
+public abstract  class RecipeModel {
     private final String recipeName;
     private final UserModel recipeCooker;
     private final String recipeDescription;

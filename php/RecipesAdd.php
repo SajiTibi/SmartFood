@@ -11,10 +11,12 @@
 	$recipe_price = $_POST["recipe_price"];
 	$recipe_cooker = $_POST["recipe_cooker"];
 	$recipe_cooker_id = $_POST["recipe_cooker_id"];
+	$recipe_longitude = $_POST["recipe_longitude"];
+	$recipe_latitude = $_POST["recipe_latitude"];
 	$response = array();
 	$response["success"] = false;
-	$statement = mysqli_prepare($con, "INSERT INTO recipes_table (recipe_cooker_id,recipe_name,recipe_cooker, 		recipe_description,recipe_price) VALUES (?,?,?,?,?)");
-	mysqli_stmt_bind_param($statement, "isssd",$recipe_cooker_id, $recipe_name,$recipe_cooker,$recipe_description, $recipe_price);
+	$statement = mysqli_prepare($con, "INSERT INTO recipes_table (recipe_cooker_id,recipe_name,recipe_cooker, 		recipe_description,recipe_price,recipe_longitude,recipe_latitude) VALUES (?,?,?,?,?,?,?)");
+	mysqli_stmt_bind_param($statement, "isssddd",$recipe_cooker_id, $recipe_name,$recipe_cooker,$recipe_description, $recipe_price,$recipe_longitude,$recipe_latitude);
 	mysqli_stmt_execute($statement);
 	$response = array();
 

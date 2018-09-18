@@ -1,8 +1,14 @@
 package com.example.saji.smartfood;
 
+import android.Manifest;
 import android.app.Fragment;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +33,7 @@ import java.util.Map;
 
 public class AddRecipeDialog extends DialogFragment {
     View view;
+    private Location lastLocation;
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.add_recipe_dialog, container, false);
         final TextView recipeName = view.findViewById(R.id.recipe_name);
@@ -34,6 +41,33 @@ public class AddRecipeDialog extends DialogFragment {
         final TextView recipePrice = view.findViewById(R.id.recipe_price);
         Button addButton = view.findViewById(R.id.add_recipe);
         Button cancelButton = view.findViewById(R.id.cancel_recipe);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setSpeedRequired(false);
+        criteria.setCostAllowed(true);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService
+                (getContext().LOCATION_SERVICE);
+
+        String provider = locationManager.getBestProvider(criteria, true);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            // no need of any of above since adding is second fragment and we already have
+            // permission on first fragment (Map)
+            return null;
+        }
+        lastLocation = locationManager.getLastKnownLocation(provider);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +91,7 @@ public class AddRecipeDialog extends DialogFragment {
             public void onResponse(String response) {
                 JSONObject jsonResponse;
                 try {
+                    System.out.println(response);
                     jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success){
@@ -77,6 +112,9 @@ public class AddRecipeDialog extends DialogFragment {
                 params.put(Configs.RECIPE_PRICE,String.valueOf(recipePrice));
                 params.put(Configs.RECIPE_COOKER,MainActivity.loggedUser.getEmailAddress());
                 params.put(Configs.RECIPE_COOKER_ID, String.valueOf(MainActivity.loggedUser.getUserID()));
+                params.put(Configs.RECIPE_LONGITUDE, String.valueOf(lastLocation.getLongitude()));
+                params.put(Configs.RECIPE_LATITUDE, String.valueOf(lastLocation.getLatitude()));
+
                 return params;
             }
         };

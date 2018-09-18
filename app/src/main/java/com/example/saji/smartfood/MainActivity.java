@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     static UserModel loggedUser;
-
+    private static final String[] PAGE_TITLES = new String[]{"Food Map", "Recipes","About"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return new FoodMap();
         }
-
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return PAGE_TITLES[position];
+        }
         @Override
         public int getCount() {
             return numberOfPages;
