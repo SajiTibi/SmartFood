@@ -8,8 +8,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
-    private static  int numberOfPages;
+    private static int numberOfPages;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     static UserModel loggedUser;
@@ -26,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         loggedUser = new UserModel(userID, emailAddress, userType);
         if (userType == Configs.USER_FOODIE_ID) {
             numberOfPages = 2;
-        }else{
-            numberOfPages= 3;
+        } else {
+            numberOfPages = 3;
         }
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -41,14 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                    return new FoodMap();
-                case 1:
-                    return new AboutTab();
-                case 2:
-                    return new CookerRecipes();
+            int lastPage = numberOfPages - 1;
+            if (position < lastPage) {
+                switch (position) {
+                    case 0:
+                        return new FoodMap();
+                    case 1:
+                        return new CookerRecipes();
+                }
+            } else {
+                return new AboutTab();
             }
             return new FoodMap();
         }

@@ -33,11 +33,12 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword1 = findViewById(R.id.registration_pwd_1);
         mPassword2 = findViewById(R.id.registration_pwd_2);
         Button registerButton = findViewById(R.id.register_button);
-        RadioGroup userType = findViewById(R.id.user_type_group);
-        final int selectedButtonID =userType.getCheckedRadioButtonId();
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RadioGroup userType = findViewById(R.id.user_type_group);
+                final int selectedButtonID = userType.getCheckedRadioButtonId();
                 if (mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
                     // since there is only two selections we will pass 1 if foodie, 0 if cooker
                     attemptRegister(selectedButtonID==R.id.foodie_button?1:0);
