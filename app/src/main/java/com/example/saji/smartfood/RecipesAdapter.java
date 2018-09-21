@@ -15,13 +15,15 @@ import java.util.ArrayList;
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
     private LayoutInflater mInflater;
     ArrayList<RecipeModel> recipeModelArrayList;
-    public RecipesAdapter(Context context,ArrayList<RecipeModel> recipeModelArrayList){
-        this.recipeModelArrayList=recipeModelArrayList;
+
+    public RecipesAdapter(Context context, ArrayList<RecipeModel> recipeModelArrayList) {
+        this.recipeModelArrayList = recipeModelArrayList;
         mInflater = LayoutInflater.from(context);
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view  = mInflater.inflate(R.layout.recipe_row,parent,false);
+        View view = mInflater.inflate(R.layout.recipe_row, parent, false);
 
         return new ViewHolder(view);
     }
@@ -45,6 +47,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         TextView recipeCooker;
         TextView recipeDescription;
         Button recipePurchase;
+
         public ViewHolder(View itemView) {
             super(itemView);
             recipeName = itemView.findViewById(R.id.recipe_name);

@@ -1,13 +1,13 @@
 package com.example.saji.smartfood;
 
-public abstract  class RecipeModel {
+public abstract class RecipeModel {
     private final String recipeName;
     private final UserModel recipeCooker;
     private final String recipeDescription;
     private final double recipePrice;
 
     public RecipeModel(String recipeName, UserModel recipeCooker, String recipeDescription, double
-            recipePrice){
+            recipePrice) {
 
         this.recipeName = recipeName;
         this.recipeCooker = recipeCooker;

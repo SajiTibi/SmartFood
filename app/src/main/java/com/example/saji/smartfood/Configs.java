@@ -15,7 +15,7 @@ public class Configs {
             ".com/AllRecipeRetriever.php";
     // DB related
     public static final String USER_EMAIL = "email_address";
-    public static final String USER_PASSWORD ="user_password";
+    public static final String USER_PASSWORD = "user_password";
     public static final String USER_TYPE = "user_type";
     public static final String USER_ID = "uid";
     public static final String RECIPE_NAME = "recipe_name";
@@ -26,19 +26,21 @@ public class Configs {
     public static final String RECIPE_PRICE = "recipe_price";
     public static final String RECIPE_ID = "recipe_id";
     public static final String RECIPE_LONGITUDE = "recipe_longitude";
-    public static final String RECIPE_LATITUDE= "recipe_latitude";
+    public static final String RECIPE_LATITUDE = "recipe_latitude";
     public final static String SEPARATOR = "__,__";
 
-    public enum UserType{
-        FOODIE( "Foodie",1),
-        COOKER ("Cooker",0);
+    public enum UserType {
+        FOODIE("Foodie", 1),
+        COOKER("Cooker", 0);
         private final String name;
         private final int type;
-        UserType ( String name,int type){
-            this.name=name;
-            this.type=type;
+
+        UserType(String name, int type) {
+            this.name = name;
+            this.type = type;
         }
-        public String getName(){
+
+        public String getName() {
             return name;
         }
     }

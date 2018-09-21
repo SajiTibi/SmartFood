@@ -10,13 +10,15 @@ public class RegisterRequest extends StringRequest {
     private String email;
     private String password;
     private int userType;
+
     RegisterRequest(String email, String password, int userType, Response.Listener<String>
             listener) {
         super(Method.POST, Configs.REGISTER_REQUEST_URL, listener, null);
-        this.email=email;
-        this.password=password;
-        this.userType=userType;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
     }
+
     @Override
     protected Map<String, String> getParams() {
         Map<String, String> params = new HashMap<String, String>();

@@ -1,5 +1,6 @@
 package com.example.saji.smartfood;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,11 +35,11 @@ public class CookerRecipes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.cooker_recipes,container,false);
+        View view = inflater.inflate(R.layout.cooker_recipes, container, false);
         recipeRecyclerView = view.findViewById(R.id.recipes_recycler_view);
         recipeModelArrayList = new ArrayList<>();
         loadRecipes();
-        recipesRecyclerViewAdapter = new RecipesAdapter(getContext(),recipeModelArrayList);
+        recipesRecyclerViewAdapter = new RecipesAdapter(getContext(), recipeModelArrayList);
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recipeRecyclerView.setAdapter(recipesRecyclerViewAdapter);
         final Button addRecipeButton = view.findViewById(R.id.add_recipe);
@@ -46,11 +47,19 @@ public class CookerRecipes extends Fragment {
             @Override
             public void onClick(View view) {
                 AddRecipeDialog addRecipeDialog = new AddRecipeDialog();
-                addRecipeDialog.show(getFragmentManager(),"AddRecipeDialog");
+                addRecipeDialog.show(getFragmentManager(), "AddRecipeDialog");
+
+                addRecipeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        loadRecipes();
+                    }
+                });
             }
         });
-        return  view ;
+        return view;
     }
+
     // TODO maybe to add ability to save recipes locale instead of loading each time from server
     private void loadRecipes() {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
@@ -63,6 +72,7 @@ public class CookerRecipes extends Fragment {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
+                        recipeModelArrayList.clear();
                         Iterator keyz = jsonResponse.keys();
                         keyz.next();
                         while (keyz.hasNext()) {
@@ -77,19 +87,19 @@ public class CookerRecipes extends Fragment {
                             // loading our own recipes, however recipe cooker needed for showing
                             // menu for other users
                             RecipeModel newRecipe = new MyRecipe(recipeName, MainActivity
-                                    .loggedUser,recipeDescription,recipePrice);
+                                    .loggedUser, recipeDescription, recipePrice);
                             recipeModelArrayList.add(newRecipe);
                             recipesRecyclerViewAdapter.notifyDataSetChanged();
-                            }
+                        }
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
 
                 }
             }
-        },null){
+        }, null) {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 params.put("recipe_cooker_id", String.valueOf(MainActivity.loggedUser.userID));
                 return params;
             }

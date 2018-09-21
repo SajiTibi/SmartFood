@@ -2,6 +2,7 @@ package com.example.saji.smartfood;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -34,6 +35,8 @@ import java.util.Map;
 public class AddRecipeDialog extends DialogFragment {
     View view;
     private Location lastLocation;
+    private DialogInterface.OnDismissListener onDismissListener;
+
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.add_recipe_dialog, container, false);
         final TextView recipeName = view.findViewById(R.id.recipe_name);
@@ -84,6 +87,17 @@ public class AddRecipeDialog extends DialogFragment {
         return view;
     }
 
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss(dialog);
+        }
+    }
+
     private void addRecipe(final String recipeName, final String recipeDescription, final Double recipePrice) {
         StringRequest addRecipeSR = new StringRequest(Request.Method.POST, Configs
                 .RECIPES_ADD_URL, new Response.Listener<String>() {
@@ -94,9 +108,9 @@ public class AddRecipeDialog extends DialogFragment {
                     System.out.println(response);
                     jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
-                    if (success){
+                    if (success) {
                         // TODO show message that added successfully
-                       // Snackbar.make(view,"Added successfully", Toast.LENGTH_SHORT);
+                        // Snackbar.make(view,"Added successfully", Toast.LENGTH_SHORT);
                         getDialog().dismiss();
                     }
                 } catch (JSONException e) {
@@ -107,10 +121,10 @@ public class AddRecipeDialog extends DialogFragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put(Configs.RECIPE_NAME,recipeName);
-                params.put(Configs.RECIPE_DESCRIPTION,recipeDescription);
-                params.put(Configs.RECIPE_PRICE,String.valueOf(recipePrice));
-                params.put(Configs.RECIPE_COOKER,MainActivity.loggedUser.getEmailAddress());
+                params.put(Configs.RECIPE_NAME, recipeName);
+                params.put(Configs.RECIPE_DESCRIPTION, recipeDescription);
+                params.put(Configs.RECIPE_PRICE, String.valueOf(recipePrice));
+                params.put(Configs.RECIPE_COOKER, MainActivity.loggedUser.getEmailAddress());
                 params.put(Configs.RECIPE_COOKER_ID, String.valueOf(MainActivity.loggedUser.getUserID()));
                 params.put(Configs.RECIPE_LONGITUDE, String.valueOf(lastLocation.getLongitude()));
                 params.put(Configs.RECIPE_LATITUDE, String.valueOf(lastLocation.getLatitude()));

@@ -53,6 +53,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
     private Location mLastKnownLocation;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private ArrayList<RegularRecipe> loadedRecipes;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        loadedRecipes= new ArrayList<>();
+        loadedRecipes = new ArrayList<>();
         updateRecipes();
         return view;
     }
@@ -91,17 +92,17 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
                             // recipe id will be needed if cook wishes to modify/delete recipe
                             int recipeID = key.getInt(Configs.RECIPE_ID);
                             RegularRecipe newRecipe = new RegularRecipe(recipeName, MainActivity
-                                    .loggedUser,recipeDescription,recipePrice,recipeLongitude,
+                                    .loggedUser, recipeDescription, recipePrice, recipeLongitude,
                                     recipeLatitude);
                             loadedRecipes.add(newRecipe);
                         }
                         updateMarkersOnMap();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
 
                 }
             }
-        },null);
+        }, null);
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(recipesRequest);
 
@@ -109,20 +110,18 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
 
     private void updateMarkersOnMap() {
         mMap.clear();
-        for (RegularRecipe recipe : loadedRecipes){
-            LatLng latLng = new LatLng(recipe.getRecipeLongitude(),recipe.getRecipeLatitude());
+        for (RegularRecipe recipe : loadedRecipes) {
+            LatLng latLng = new LatLng(recipe.getRecipeLongitude(), recipe.getRecipeLatitude());
             System.out.println(recipe.getRecipeLongitude());
             System.out.println(recipe.getRecipeLatitude());
             String recipeDetails = createInfoString(recipe);
             mapMarkers.add(new MarkerOptions().position(latLng).title(recipe.getRecipeName()).snippet
                     (recipeDetails));
         }
-        for (MarkerOptions markerOptions : mapMarkers){
+        for (MarkerOptions markerOptions : mapMarkers) {
             mMap.addMarker(markerOptions);
         }
     }
-
-
 
 
     @Override
@@ -281,6 +280,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
         infoMap.put(Configs.RECIPE_PRICE, stringSplit[3]);
         return infoMap;
     }
+
     private class MyInfoAdapter implements GoogleMap.InfoWindowAdapter {
         private final View myContestView;
 
@@ -288,6 +288,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
             myContestView = getActivity().getLayoutInflater().inflate(R.layout
                     .custom_recipe_info, null);
         }
+
         @Override
         public View getInfoWindow(Marker marker) {
             return null;

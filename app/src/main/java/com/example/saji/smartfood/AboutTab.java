@@ -19,14 +19,14 @@ public class AboutTab extends Fragment {
         TextView userID = view.findViewById(R.id.user_id);
         TextView userEmail = view.findViewById(R.id.user_email);
         TextView userType = view.findViewById(R.id.user_type);
-        userID.setText(userID.getText() +String.valueOf(MainActivity.loggedUser.userID));
-        userEmail.setText(userEmail.getText() +MainActivity.loggedUser.emailAddress);
+        userID.setText(userID.getText() + String.valueOf(MainActivity.loggedUser.userID));
+        userEmail.setText(userEmail.getText() + MainActivity.loggedUser.emailAddress);
         userType.setText(MainActivity.loggedUser.getUserType().getName());
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent loginIntent = new Intent(getActivity(),LoginActivity.class);
+                Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(loginIntent);
                 getActivity().finish();
 

@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
                 final int selectedButtonID = userType.getCheckedRadioButtonId();
                 if (mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
                     // since there is only two selections we will pass 1 if foodie, 0 if cooker
-                    attemptRegister(selectedButtonID==R.id.foodie_button?1:0);
+                    attemptRegister(selectedButtonID == R.id.foodie_button ? 1 : 0);
                 } else {
                     Snackbar.make(view, "Make sure both passwords match", Snackbar.LENGTH_SHORT).show();
                 }
@@ -51,11 +51,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     /**
      * tries to register user
+     *
      * @param userType 1 is foodie, 0 is cooker
      */
     private void attemptRegister(int userType) {
         StringRequest sr = new RegisterRequest(mEmail.getText().toString(), mPassword1.getText()
-                .toString(),userType, new Response.Listener<String>() {
+                .toString(), userType, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
