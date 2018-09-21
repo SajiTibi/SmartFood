@@ -1,8 +1,10 @@
 package com.example.saji.smartfood;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,8 +61,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Pair<String, String> lastUser = getLastUser();
+        if (!lastUser.first.equals("") && !lastUser.second.equals("")) {
+            findViewById(R.id.email_sign_in_button).setVisibility(View.INVISIBLE);
+            findViewById(R.id.register_button).setVisibility(View.INVISIBLE);
+            mEmailView.setText(lastUser.first);
+            mPasswordView.setText(lastUser.second);
+            attemptLogin();
+        }
     }
 
+    private Pair<String, String> getLastUser() {
+        final String NONE = "";
+        final String PREF = "User";
+
+        SharedPreferences prefs = getSharedPreferences(PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        String savedUsername = prefs.getString("Username", NONE);
+        String savedKey = prefs.getString("Key", NONE);
+        if (savedUsername.equals(NONE) || savedKey.equals(NONE)) {
+            editor.putString("Username", "");
+            editor.putString("Key", "");
+            editor.commit();
+        }
+
+        Pair<String, String> UP = new Pair<>(savedUsername, savedKey);
+        return UP;
+    }
 
     private void attemptLogin() {
         StringRequest sr = new LoginRequest(mEmailView.getText().toString(),
@@ -72,6 +99,16 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
+
+                        //saving user & password to next Login
+                        final String NONE = "";
+                        final String PREF = "User";
+                        SharedPreferences prefs = getSharedPreferences(PREF, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("Username", mEmailView.getText().toString());
+                        editor.putString("Key", mPasswordView.getText().toString());
+                        editor.commit();
+
                         // forwarding userID and user type to main screen activity
                         int userID = jsonResponse.getInt(Configs.USER_ID);
                         int userType = jsonResponse.getInt(Configs.USER_TYPE);

@@ -1,6 +1,7 @@
 package com.example.saji.smartfood;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AboutTab extends Fragment {
     @Override
@@ -26,6 +29,16 @@ public class AboutTab extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //Deleting saved user & password
+                final String NONE = "";
+                final String PREF = "User";
+                SharedPreferences prefs = getContext().getSharedPreferences(PREF, MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("Username", NONE);
+                editor.putString("Key", NONE);
+                editor.commit();
+
                 Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(loginIntent);
                 getActivity().finish();
