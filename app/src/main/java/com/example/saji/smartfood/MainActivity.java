@@ -22,30 +22,34 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
     private static int numberOfPages;
+    private static final int COOK_PAGES_NUM = 4;
+    private static final int FOODIE_PAGES_NUM = 2;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     static UserModel loggedUser;
     public static ArrayList<UserModel> allUsers;
-    private static final String[] PAGE_TITLES = new String[]{"Food Map", "Recipes", "About"};
+    private String[] PAGE_TITLES;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
         Bundle extras = getIntent().getExtras();
-        allUsers= new ArrayList<>();
+        allUsers = new ArrayList<>();
         int userID = extras.getInt(Configs.USER_ID);
         int userType = extras.getInt(Configs.USER_TYPE);
         String fcmToken = extras.getString(Configs.FIREBASE_TOKEN);
         String emailAddress = extras.getString(Configs.USER_EMAIL);
-        loggedUser = new UserModel(userID, emailAddress, userType,fcmToken);
+        PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "Dishes", "Orders", "About"} : new String[]{"Food Map", "About"};
+        loggedUser = new UserModel(userID, emailAddress, userType, fcmToken);
+
         // to update FCM if outdated
         Tools.getInstance().checkAndUpdateMyFCM();
         loadAllUsers();
         if (userType == Configs.USER_FOODIE_ID) {
-            numberOfPages = 2;
+            numberOfPages = FOODIE_PAGES_NUM;
         } else {
-            numberOfPages = 3;
+            numberOfPages = COOK_PAGES_NUM;
         }
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -65,8 +69,9 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         return new FoodMap();
                     case 1:
+                        return new CookerRecipes();
+                    case 2:
                         return new OrdersFragment();
-                       // return new CookerRecipes();
                 }
             } else {
                 return new AboutTab();
@@ -100,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
                         keyz.next();
                         while (keyz.hasNext()) {
                             JSONObject key = jsonResponse.getJSONObject((String) keyz.next());
-                            int  uid = key.getInt(Configs.USER_ID);
+                            int uid = key.getInt(Configs.USER_ID);
                             String emailAddress = key.getString(Configs.USER_EMAIL);
                             int userType = key.getInt(Configs.USER_TYPE);
                             String fcmToken = key.getString(Configs.FIREBASE_TOKEN);
-                            UserModel newUser = new UserModel(uid,emailAddress,userType,fcmToken);
+                            UserModel newUser = new UserModel(uid, emailAddress, userType, fcmToken);
                             allUsers.add(newUser);
                         }
                     }

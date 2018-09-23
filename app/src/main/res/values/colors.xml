@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="darkBlue">#0000A0</color>
+    <color name="lightBlue">#ADD8E6</color>
+    <color name="cardview_darker_background">#252525</color>
+    <color name="matrixGreen">#00FF00</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#5e7974</color>
+    <color name="lightGrey">#D3D3D3</color>
+    <color name="black">#000</color>
+    <color name="cyan">#ADD8E6</color>
+    <color name="blue">#00BFFF</color>
 </resources>

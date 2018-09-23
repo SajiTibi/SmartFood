@@ -1,11 +1,13 @@
 package com.example.saji.smartfood;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -25,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPassword1;
     private EditText mPassword2;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,19 +35,24 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.registration_email);
         mPassword1 = findViewById(R.id.registration_pwd_1);
         mPassword2 = findViewById(R.id.registration_pwd_2);
-        Button registerButton = findViewById(R.id.register_button);
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        final Button registerButton = findViewById(R.id.register_button);
+        registerButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                RadioGroup userType = findViewById(R.id.user_type_group);
-                final int selectedButtonID = userType.getCheckedRadioButtonId();
-                if (mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
-                    // since there is only two selections we will pass 1 if foodie, 0 if cooker
-                    attemptRegister(selectedButtonID == R.id.foodie_button ? 1 : 0);
-                } else {
-                    Snackbar.make(view, "Make sure both passwords match", Snackbar.LENGTH_SHORT).show();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    registerButton.setBackground(getDrawable(R.drawable.button_unclicked_drawable));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    registerButton.setBackground(getDrawable(R.drawable.button_clicked_drawable));
+                    RadioGroup userType = findViewById(R.id.user_type_group);
+                    final int selectedButtonID = userType.getCheckedRadioButtonId();
+                    if (mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
+                        // since there is only two selections we will pass 1 if foodie, 0 if cooker
+                        attemptRegister(selectedButtonID == R.id.foodie_button ? 1 : 0);
+                    } else {
+                        Snackbar.make(view, "Make sure both passwords match", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
+                return false;
             }
         });
     }

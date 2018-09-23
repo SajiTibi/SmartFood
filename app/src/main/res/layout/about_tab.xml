@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:gravity="top|center"
+    android:gravity="center_horizontal|center_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,13 +20,16 @@
 
     <TextView
         android:id="@+id/user_type"
+        android:hint="User Type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
 
     <Button
         android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"/>
+        android:layout_marginTop="30dp"
+        android:layout_width="76dp"
+        android:layout_height="30dp"
+        android:background="@drawable/button_unclicked_drawable"
+        android:text="Logout" />
 </LinearLayout>

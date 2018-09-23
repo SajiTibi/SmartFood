@@ -5,10 +5,12 @@
               android:layout_height="match_parent">
 
     <ScrollView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -48,12 +50,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Re-enter Password"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword" />
 
                 <RadioGroup
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:id="@+id/user_type_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -62,15 +66,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:checked="true"
-                        android:text="Foodie"/>
+                        android:text="Foodie" />
 
                     <RadioButton
                         android:id="@+id/cooker_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="149dp"
                         android:layout_weight="1"
                         android:checked="false"
-                        android:text="Cooker"/>
+                        android:text="Cooker" />
 
                 </RadioGroup>
 
@@ -78,10 +83,13 @@
 
             <Button
                 android:id="@+id/register_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="165dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="25dp"
                 android:layout_weight="1"
-                android:text="REGISTER"/>
+                android:background="@drawable/button_unclicked_drawable"
+                android:text="REGISTER" />
         </LinearLayout>
     </ScrollView>
 

@@ -1,11 +1,13 @@
 package com.example.saji.smartfood;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,21 +48,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        final Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    mEmailSignInButton.setBackground(getDrawable(R.drawable.button_clicked_drawable));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    mEmailSignInButton.setBackground(getDrawable(R.drawable.button_unclicked_drawable));
+                    attemptLogin();
+                }
+                return false;
             }
         });
-        Button registerButton = findViewById(R.id.register_button);
-        registerButton.setOnClickListener(new OnClickListener() {
+
+        final Button registerButton = findViewById(R.id.register_button);
+        registerButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                LoginActivity.this.startActivity(registerIntent);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    registerButton.setBackground(getDrawable(R.drawable.button_clicked_drawable));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    registerButton.setBackground(getDrawable(R.drawable.button_unclicked_drawable));
+                    Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                    LoginActivity.this.startActivity(registerIntent);
+                }
+                return false;
             }
         });
+
 
         Pair<String, String> lastUser = getLastUser();
         if (!lastUser.first.equals("") && !lastUser.second.equals("")) {
@@ -79,9 +96,11 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         String savedUsername = prefs.getString("Username", NONE);
         String savedKey = prefs.getString("Key", NONE);
-        if (savedUsername.equals(NONE) || savedKey.equals(NONE)) {
-            editor.putString("Username", "");
-            editor.putString("Key", "");
+        String savedToken = prefs.getString("Token", NONE);
+        if (savedUsername.equals(NONE) || savedKey.equals(NONE) || savedToken.equals(NONE)) {
+            editor.putString("Username", NONE);
+            editor.putString("Key", NONE);
+            editor.putString("Token", NONE);
             editor.commit();
         }
 
@@ -99,20 +118,21 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
+                        int userID = jsonResponse.getInt(Configs.USER_ID);
+                        int userType = jsonResponse.getInt(Configs.USER_TYPE);
+                        String fcmToken = jsonResponse.getString(Configs.FIREBASE_TOKEN);
 
-                        //saving user & password to next Login
+                        //saving user, password & token to next Login
                         final String NONE = "";
                         final String PREF = "User";
                         SharedPreferences prefs = getSharedPreferences(PREF, MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("Username", mEmailView.getText().toString());
                         editor.putString("Key", mPasswordView.getText().toString());
+                        editor.putString("Token", fcmToken);
                         editor.commit();
 
                         // forwarding userID and user type to main screen activity
-                        int userID = jsonResponse.getInt(Configs.USER_ID);
-                        int userType = jsonResponse.getInt(Configs.USER_TYPE);
-                        String fcmToken = jsonResponse.getString(Configs.FIREBASE_TOKEN);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         // passing user information to main activity
                         intent.putExtra(Configs.USER_ID, userID);
