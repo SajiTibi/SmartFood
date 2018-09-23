@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -89,10 +90,16 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
                             String recipeName = key.getString(Configs.RECIPE_NAME);
                             String recipeDescription = key.getString(Configs.RECIPE_DESCRIPTION);
                             double recipePrice = key.getDouble(Configs.RECIPE_PRICE);
-                            // recipe id will be needed if cook wishes to modify/delete recipe
+                            int recipeCookerID = key.getInt(Configs.RECIPE_COOKER_ID);
                             int recipeID = key.getInt(Configs.RECIPE_ID);
-                            RegularRecipe newRecipe = new RegularRecipe(recipeName, MainActivity
-                                    .loggedUser, recipeDescription, recipePrice, recipeLongitude,
+                            UserModel cooker = findCooker(recipeCookerID);
+                            if (cooker==null){
+                                System.out.println("Cant find cooker in all users");
+                                return;
+                            }
+                            RegularRecipe newRecipe = new RegularRecipe(recipeID,
+                                    recipeCookerID,recipeName, cooker, recipeDescription, recipePrice,
+                                    recipeLongitude,
                                     recipeLatitude);
                             loadedRecipes.add(newRecipe);
                         }
@@ -108,12 +115,19 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
 
     }
 
+    private UserModel findCooker(int recipeCookerID) {
+        for (UserModel user : MainActivity.allUsers){
+            if (user.userID==recipeCookerID){
+                return user;
+            }
+        }
+        return null;
+    }
+
     private void updateMarkersOnMap() {
         mMap.clear();
         for (RegularRecipe recipe : loadedRecipes) {
             LatLng latLng = new LatLng(recipe.getRecipeLongitude(), recipe.getRecipeLatitude());
-            System.out.println(recipe.getRecipeLongitude());
-            System.out.println(recipe.getRecipeLatitude());
             String recipeDetails = createInfoString(recipe);
             mapMarkers.add(new MarkerOptions().position(latLng).title(recipe.getRecipeName()).snippet
                     (recipeDetails));
@@ -258,15 +272,15 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
 
     // This is done since marker can have only snippet which is String so we build a String that
     // contains all of our information then we extract it
-    private String createInfoString(RecipeModel recipeModel) {
+    private String createInfoString(RegularRecipe recipeModel) {
 
         String recipeInfo = "";
         recipeInfo += recipeModel.getRecipeName() + Configs.SEPARATOR;
         recipeInfo += recipeModel.getRecipeCooker().getEmailAddress() + Configs.SEPARATOR;
         recipeInfo += recipeModel.getRecipeDescription() + Configs.SEPARATOR;
         recipeInfo += recipeModel.getRecipePrice() + Configs.SEPARATOR;
-        //recipeInfo += recipeModel.getRecipeID();
-        // TODO add recipes ids in app to identify recipes
+        recipeInfo += recipeModel.getRecipeID()+Configs.SEPARATOR;
+        recipeInfo += recipeModel.getRecipeCookerID();
         return recipeInfo;
     }
 
@@ -278,6 +292,9 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
         infoMap.put(Configs.RECIPE_COOKER, stringSplit[1]);
         infoMap.put(Configs.RECIPE_DESCRIPTION, stringSplit[2]);
         infoMap.put(Configs.RECIPE_PRICE, stringSplit[3]);
+        infoMap.put(Configs.RECIPE_ID,stringSplit[4]);
+        infoMap.put(Configs.RECIPE_COOKER_ID,stringSplit[5]);
+
         return infoMap;
     }
 
@@ -302,6 +319,8 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
             String recipeCooker = recipeDetails.get(Configs.RECIPE_COOKER);
             String recipeDescription = recipeDetails.get(Configs.RECIPE_DESCRIPTION);
             double recipePrice = Double.parseDouble(recipeDetails.get(Configs.RECIPE_PRICE));
+            final int recipeID = Integer.parseInt(recipeDetails.get(Configs.RECIPE_ID));
+            final int recipeCookerID = Integer.parseInt(recipeDetails.get(Configs.RECIPE_COOKER_ID));
             TextView recipeNameTV = myContestView.findViewById(R.id.recipe_name);
             TextView recipeCookerTV = myContestView.findViewById(R.id.recipe_cooker);
             TextView recipeDescriptionTV = myContestView.findViewById(R.id
@@ -311,7 +330,42 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
             recipeCookerTV.setText(recipeCooker);
             recipeDescriptionTV.setText(recipeDescription);
             recipePurchaseBTN.setText(String.valueOf(recipePrice));
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    placeAnOrder(recipeID,MainActivity.loggedUser.getUserID(),recipeCookerID);
+                }
+            });
             return myContestView;
         }
+    }
+    private void placeAnOrder(final int recipeID, final int recipePurchaserID, final int recipeCookerID){
+        StringRequest addRecipeSR = new StringRequest(Request.Method.POST, Configs
+                .PLACE_ORDER_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONObject jsonResponse;
+                try {
+                    jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        System.out.println("Recipe added successfully");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, null) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put(Configs.RECIPE_ID, String.valueOf(recipeID));
+                params.put(Configs.RECIPE_COOKER_ID, String.valueOf(recipeCookerID));
+                params.put(Configs.RECIPE_PURCHASER_ID, String.valueOf(recipePurchaserID));
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(addRecipeSR);
     }
 }

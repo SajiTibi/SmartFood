@@ -100,7 +100,7 @@ public class CookerRecipes extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("recipe_cooker_id", String.valueOf(MainActivity.loggedUser.userID));
+                params.put(Configs.RECIPE_COOKER_ID, String.valueOf(MainActivity.loggedUser.userID));
                 return params;
             }
         };

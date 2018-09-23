@@ -4,10 +4,11 @@ public class UserModel {
     int userID;
     String emailAddress;
     Configs.UserType userType;
-
-    public UserModel(int userID, String emailAddress, int userTypeID) {
+    String fcmToken ;
+    public UserModel(int userID, String emailAddress, int userTypeID,String fcmToken) {
         this.userID = userID;
         this.emailAddress = emailAddress;
+        this.fcmToken= fcmToken;
         userType = userTypeID == Configs.USER_FOODIE_ID ? Configs.UserType.FOODIE : Configs.UserType
                 .COOKER;
     }
@@ -24,5 +25,7 @@ public class UserModel {
         return userType;
     }
 
-
+    public String getFcmToken() {
+        return fcmToken;
+    }
 }

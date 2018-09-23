@@ -19,6 +19,7 @@ while($row = mysqli_fetch_assoc($result)){
         $response["success"] = true;
         $response["uid"] = $row["uid"];
 	$response["user_type"]= $row["user_type"];
+	$response["fcm_token"] = $row["fcm_token"];
         break;
     }
 }

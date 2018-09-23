@@ -13,11 +13,24 @@ public class Configs {
             ".com/RecipesAdd.php";
     public static final String ALL_RECIPES_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
             ".com/AllRecipeRetriever.php";
+    public static final String REGISTER_TOKEN_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/RegisterToken.php";
+    public static final String TOKEN_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/FCMRetriever.php";
+    public static final String ALL_USERS_RETRIEVAL_URL ="https://silicotic-vent.000webhostapp" +
+            ".com/AllUsersRetriever.php";
+    public static final String PLACE_ORDER_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/PlaceAnOder.php";
+    public static final String ORDERS_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/CookerOrdersRetriever.php";
+
     // DB related
     public static final String USER_EMAIL = "email_address";
     public static final String USER_PASSWORD = "user_password";
     public static final String USER_TYPE = "user_type";
     public static final String USER_ID = "uid";
+    public static final String FIREBASE_TOKEN = "fcm_token";
+
     public static final String RECIPE_NAME = "recipe_name";
     public static final String RECIPE_COOKER_ID = "recipe_cooker_id";
     // TODO change this to recipe_cooker_name in db,here and php
@@ -27,6 +40,10 @@ public class Configs {
     public static final String RECIPE_ID = "recipe_id";
     public static final String RECIPE_LONGITUDE = "recipe_longitude";
     public static final String RECIPE_LATITUDE = "recipe_latitude";
+    public static final String RECIPE_PURCHASER_ID = "recipe_purchaser_id";
+    public static final String RECIPE_TIME_ORDER_PLACED = "time_order_placed";
+    public static final String ORDER_ID = "order_id";
+
     public final static String SEPARATOR = "__,__";
 
     public enum UserType {
