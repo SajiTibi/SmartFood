@@ -109,8 +109,8 @@ public class AddRecipeDialog extends DialogFragment {
                     jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
-                        // TODO show message that added successfully
-                        // Snackbar.make(view,"Added successfully", Toast.LENGTH_SHORT);
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                "Added successfully", Toast.LENGTH_SHORT).show();
                         getDialog().dismiss();
                     }
                 } catch (JSONException e) {

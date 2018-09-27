@@ -40,7 +40,8 @@
     <Button
         android:id="@+id/recipe_purchase"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="29dp"
         android:layout_alignParentRight="true"
-        android:text="Price"/>
+        android:background="@drawable/button_unclicked_drawable"
+        android:text="Price" />
 </RelativeLayout>

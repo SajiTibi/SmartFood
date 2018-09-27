@@ -34,7 +34,8 @@
 
     <Button
         android:id="@+id/purchase_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BUY"/>
+        android:layout_width="58dp"
+        android:layout_height="30dp"
+        android:background="@drawable/button_unclicked_drawable"
+        android:text="BUY" />
 </LinearLayout>

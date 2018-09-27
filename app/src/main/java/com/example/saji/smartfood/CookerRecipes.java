@@ -1,11 +1,13 @@
 package com.example.saji.smartfood;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +34,7 @@ public class CookerRecipes extends Fragment {
     RecyclerView.Adapter recipesRecyclerViewAdapter;
     ArrayList<RecipeModel> recipeModelArrayList;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +46,23 @@ public class CookerRecipes extends Fragment {
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recipeRecyclerView.setAdapter(recipesRecyclerViewAdapter);
         final Button addRecipeButton = view.findViewById(R.id.add_recipe);
-        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+        addRecipeButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                AddRecipeDialog addRecipeDialog = new AddRecipeDialog();
-                addRecipeDialog.show(getFragmentManager(), "AddRecipeDialog");
-
-                addRecipeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        loadRecipes();
-                    }
-                });
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    AddRecipeDialog addRecipeDialog = new AddRecipeDialog();
+                    addRecipeDialog.show(getFragmentManager(), "AddRecipeDialog");
+                    addRecipeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            loadRecipes();
+                        }
+                    });
+                    addRecipeButton.setBackground(getContext().getDrawable(R.drawable.button_clicked_drawable));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    addRecipeButton.setBackground(getContext().getDrawable(R.drawable.button_unclicked_drawable));
+                }
+                return false;
             }
         });
         return view;

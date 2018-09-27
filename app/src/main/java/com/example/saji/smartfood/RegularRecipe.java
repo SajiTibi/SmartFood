@@ -5,14 +5,15 @@ public class RegularRecipe extends RecipeModel {
     private double recipeLatitude;
     private int recipeID;
     private int recipeCookerID;
-    public RegularRecipe(int recipeID, int recipeCookerID,String recipeName, UserModel
+
+    public RegularRecipe(int recipeID, int recipeCookerID, String recipeName, UserModel
             recipeCooker, String recipeDescription,
                          double recipePrice, double recipeLongitude, double recipeLatitude) {
         super(recipeName, recipeCooker, recipeDescription, recipePrice);
         this.recipeLongitude = recipeLongitude;
         this.recipeLatitude = recipeLatitude;
-        this.recipeCookerID=recipeCookerID;
-        this.recipeID= recipeID;
+        this.recipeCookerID = recipeCookerID;
+        this.recipeID = recipeID;
     }
 
     public double getRecipeLongitude() {
@@ -26,7 +27,8 @@ public class RegularRecipe extends RecipeModel {
     public int getRecipeID() {
         return recipeID;
     }
-    public int getRecipeCookerID(){
+
+    public int getRecipeCookerID() {
         return recipeCookerID;
     }
 }

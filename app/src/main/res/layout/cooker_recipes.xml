@@ -15,8 +15,10 @@
     <Button
         android:id="@+id/add_recipe"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="31dp"
         android:layout_gravity="center"
         android:layout_weight="0"
-        android:text="Add a dish"/>
+        android:background="@drawable/button_unclicked_drawable"
+        android:layout_marginBottom="30dp"
+        android:text="Add a dish" />
 </LinearLayout>
