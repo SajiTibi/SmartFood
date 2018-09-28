@@ -73,8 +73,15 @@ public class EditRecipeDialog extends DialogFragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 //todo Saji do the editing in the FB
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    String newRecipeName = (recipeName.getText().equals(""))? dishDetails[0] : (String) recipeName.getText();
+                    String newRecipePrice = (recipeName.getText().equals(""))? dishDetails[1] : (String) recipePrice.getText();
+                    String newRecipeDescription = (recipeName.getText().equals(""))? dishDetails[2] : (String) recipeDescription.getText();
+
+
                     editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
+
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+
                     editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
                 }
                 getDialog().dismiss();
