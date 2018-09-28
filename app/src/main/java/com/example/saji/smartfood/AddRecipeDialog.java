@@ -1,6 +1,7 @@
 package com.example.saji.smartfood;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,13 +39,14 @@ public class AddRecipeDialog extends DialogFragment {
     private Location lastLocation;
     private DialogInterface.OnDismissListener onDismissListener;
 
+    @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.add_recipe_dialog, container, false);
         final TextView recipeName = view.findViewById(R.id.recipe_name);
         final TextView recipeDescription = view.findViewById(R.id.recipe_description);
         final TextView recipePrice = view.findViewById(R.id.recipe_price);
-        Button addButton = view.findViewById(R.id.add_recipe);
-        Button cancelButton = view.findViewById(R.id.cancel_recipe);
+        final Button addButton = view.findViewById(R.id.add_recipe);
+        final Button cancelButton = view.findViewById(R.id.cancel_recipe);
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
@@ -71,19 +74,35 @@ public class AddRecipeDialog extends DialogFragment {
             return null;
         }
         lastLocation = locationManager.getLastKnownLocation(provider);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public void onClick(View view) {
-                getDialog().dismiss();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    cancelButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
+                    getDialog().dismiss();
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    cancelButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                }
+                return false;
             }
         });
-        addButton.setOnClickListener(new View.OnClickListener() {
+
+        addButton.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public void onClick(View view) {
-                addRecipe(recipeName.getText().toString(), recipeDescription.getText().toString(),
-                        Double.valueOf(recipePrice.getText().toString()));
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    addButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
+                    addRecipe(recipeName.getText().toString(), recipeDescription.getText().toString(),
+                            Double.valueOf(recipePrice.getText().toString()));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    addButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                }
+                return false;
             }
         });
+
         return view;
     }
 

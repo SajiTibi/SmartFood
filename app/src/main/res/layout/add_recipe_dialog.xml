@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_vertical|center_horizontal"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.1"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
         <EditText
@@ -45,21 +47,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.9"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/add_recipe"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:paddingStart="10dp"
+            android:background="@drawable/dialog_button_unclicked_drawable"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:textAlignment="center"
             android:text="Add"/>
 
         <Button
             android:id="@+id/cancel_recipe"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/dialog_button_unclicked_drawable"
             android:layout_weight="1"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:textAlignment="center"
             android:text="Cancel"/>
     </LinearLayout>
 

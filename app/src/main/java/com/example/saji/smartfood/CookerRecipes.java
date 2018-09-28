@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,7 +43,8 @@ public class CookerRecipes extends Fragment {
         recipeRecyclerView = view.findViewById(R.id.recipes_recycler_view);
         recipeModelArrayList = new ArrayList<>();
         loadRecipes();
-        recipesRecyclerViewAdapter = new RecipesAdapter(getContext(), recipeModelArrayList);
+        recipesRecyclerViewAdapter = new RecipesAdapter(getContext(), recipeModelArrayList, new CustomListener());
+
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recipeRecyclerView.setAdapter(recipesRecyclerViewAdapter);
         final Button addRecipeButton = view.findViewById(R.id.add_recipe);
@@ -114,5 +116,26 @@ public class CookerRecipes extends Fragment {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(recipesRequest);
+    }
+
+    public class CustomListener implements View.OnLongClickListener{
+        private String[] dishDetails = {"", "", ""};
+        @Override
+        public boolean onLongClick(View view) {
+            EditRecipeDialog editRecipeDialog = new EditRecipeDialog();
+            editRecipeDialog.setDishDetails(dishDetails);
+            editRecipeDialog.show(getFragmentManager(), "EditRecipeDialog");
+            editRecipeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    loadRecipes();
+                }
+            });
+            return false;
+        }
+
+        public void setDishDetails(String[] details) {
+            dishDetails = details;
+        }
     }
 }

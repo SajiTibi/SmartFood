@@ -6,7 +6,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,11 +25,13 @@ import java.util.zip.Inflater;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
     private LayoutInflater mInflater;
+    private CookerRecipes.CustomListener mlistener;
     ArrayList<RecipeModel> recipeModelArrayList;
 
-    public RecipesAdapter(Context context, ArrayList<RecipeModel> recipeModelArrayList) {
+    public RecipesAdapter(Context context, ArrayList<RecipeModel> recipeModelArrayList, CookerRecipes.CustomListener listener) {
         this.recipeModelArrayList = recipeModelArrayList;
         mInflater = LayoutInflater.from(context);
+        mlistener = listener;
     }
 
     @Override
@@ -61,18 +65,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         holder.recipePurchase.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                //todo rony666: onLongClick start EditRecipeDialog and on closing it call load recipes from Cooker Recipes to update the array
-//                Activity parentActivity = (Activity)mInflater.getContext();
-//                EditRecipeDialog editRecipeDialog = new EditRecipeDialog();
-//                editRecipeDialog.show(parentActivity.getFragmentManager(),"EditRecipeDialog");
-//
-//                editRecipeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(DialogInterface dialogInterface) {
-//
-//                    }
-//                });
-                Toast.makeText(mInflater.getContext(), "=========================================", Toast.LENGTH_SHORT).show();
+                String[] details = {String.valueOf(holder.recipeName.getText()), String.valueOf(holder.recipePurchase.getText()), String.valueOf(holder.recipeDescription.getText())};
+                mlistener.setDishDetails(details);
+                mlistener.onLongClick(view);
                 return false;
             }
         });
@@ -83,7 +78,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         return recipeModelArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView recipeName;
         TextView recipeCooker;
         TextView recipeDescription;
@@ -95,11 +90,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
             recipeCooker = itemView.findViewById(R.id.recipe_cooker);
             recipeDescription = itemView.findViewById(R.id.recipe_description);
             recipePurchase = itemView.findViewById(R.id.recipe_purchase);
-        }
-
-        @Override
-        public void onClick(View view) {
-
         }
     }
 
