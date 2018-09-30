@@ -9,7 +9,7 @@ public class RegularRecipe extends RecipeModel {
     public RegularRecipe(int recipeID, int recipeCookerID, String recipeName, UserModel
             recipeCooker, String recipeDescription,
                          double recipePrice, double recipeLongitude, double recipeLatitude) {
-        super(recipeName, recipeCooker, recipeDescription, recipePrice);
+        super(recipeID, recipeName, recipeCooker, recipeDescription, recipePrice);
         this.recipeLongitude = recipeLongitude;
         this.recipeLatitude = recipeLatitude;
         this.recipeCookerID = recipeCookerID;

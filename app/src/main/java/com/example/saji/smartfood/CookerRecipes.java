@@ -96,7 +96,7 @@ public class CookerRecipes extends Fragment {
                             // this is temporary, there is no need for recipe cooker since we are
                             // loading our own recipes, however recipe cooker needed for showing
                             // menu for other users
-                            RecipeModel newRecipe = new MyRecipe(recipeName, MainActivity
+                            RecipeModel newRecipe = new MyRecipe(recipeID,recipeName, MainActivity
                                     .loggedUser, recipeDescription, recipePrice);
                             recipeModelArrayList.add(newRecipe);
                             recipesRecyclerViewAdapter.notifyDataSetChanged();

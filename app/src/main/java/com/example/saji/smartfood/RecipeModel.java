@@ -6,7 +6,8 @@ public abstract class RecipeModel {
     private final String recipeDescription;
     private final double recipePrice;
 
-    public RecipeModel(String recipeName, UserModel recipeCooker, String recipeDescription, double
+    public RecipeModel(int recipeID, String recipeName, UserModel recipeCooker, String
+            recipeDescription, double
             recipePrice) {
 
         this.recipeName = recipeName;
