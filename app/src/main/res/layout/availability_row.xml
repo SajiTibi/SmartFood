@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+     <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/recipe_picture"
+        android:text="Time"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/dishes_list"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/button_unclicked_drawable"
+        android:text="Dishes List" />
+
+</RelativeLayout>

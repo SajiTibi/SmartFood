@@ -22,7 +22,7 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
     private static int numberOfPages;
-    private static final int COOK_PAGES_NUM = 4;
+    private static final int COOK_PAGES_NUM = 5;
     private static final int FOODIE_PAGES_NUM = 2;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         String emailAddress = extras.getString(Configs.USER_EMAIL);
         double userLongitude = extras.getDouble(Configs.USER_LONGITUDE);
         double userLatitude = extras.getDouble(Configs.USER_LATITUDE);
-        PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "Dishes", "Orders", "About"} : new String[]{"Food Map", "About"};
+        PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "Dishes", "Orders", "Schedule", "About"} : new String[]{"Food Map", "About"};
         loggedUser = new UserModel(userID, emailAddress, userType, fcmToken,userLongitude,userLatitude);
 
         // to update FCM if outdated
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                         return new CookerRecipes();
                     case 2:
                         return new OrdersFragment();
+                    case 3:
+                        return new CookerSchedule();
                 }
             } else {
                 return new AboutTab();
