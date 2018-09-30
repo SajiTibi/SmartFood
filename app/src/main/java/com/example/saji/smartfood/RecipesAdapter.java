@@ -49,6 +49,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         holder.recipeDescription.setText(currentRecipe.getRecipeDescription());
         holder.recipeCooker.setText(currentRecipe.getRecipeCooker().getEmailAddress());
         holder.recipePurchase.setText(String.valueOf(currentRecipe.getRecipePrice()));
+        holder.recipeID = currentRecipe.getRecipeID();
         holder.recipePurchase.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -65,7 +66,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         holder.recipePurchase.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                String[] details = {String.valueOf(holder.recipeName.getText()), String.valueOf(holder.recipePurchase.getText()), String.valueOf(holder.recipeDescription.getText())};
+                String[] details = {String.valueOf(holder.recipeName.getText()), String.valueOf(holder.recipePurchase.getText()),
+                        String.valueOf(holder.recipeDescription.getText()), String.valueOf(holder.recipeID)};
                 mlistener.setDishDetails(details);
                 mlistener.onLongClick(view);
                 return false;
@@ -82,6 +84,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         TextView recipeName;
         TextView recipeCooker;
         TextView recipeDescription;
+        int recipeID;
         Button recipePurchase;
 
         public ViewHolder(View itemView) {

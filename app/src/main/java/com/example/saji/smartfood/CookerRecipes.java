@@ -119,7 +119,7 @@ public class CookerRecipes extends Fragment {
     }
 
     public class CustomListener implements View.OnLongClickListener{
-        private String[] dishDetails = {"", "", ""};
+        private String[] dishDetails = {"", "", "", ""};
         @Override
         public boolean onLongClick(View view) {
             EditRecipeDialog editRecipeDialog = new EditRecipeDialog();

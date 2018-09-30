@@ -121,6 +121,10 @@ public class LoginActivity extends AppCompatActivity {
                         int userID = jsonResponse.getInt(Configs.USER_ID);
                         int userType = jsonResponse.getInt(Configs.USER_TYPE);
                         String fcmToken = jsonResponse.getString(Configs.FIREBASE_TOKEN);
+                        double userLongitude = Double.parseDouble(jsonResponse.getString(Configs
+                                .USER_LONGITUDE));
+                        double userLatitude = Double.parseDouble(jsonResponse.getString(Configs
+                                .USER_LATITUDE));
 
                         //saving user, password & token to next Login
                         final String NONE = "";
@@ -139,6 +143,9 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra(Configs.USER_EMAIL, mEmailView.getText().toString());
                         intent.putExtra(Configs.USER_TYPE, userType);
                         intent.putExtra(Configs.FIREBASE_TOKEN,fcmToken);
+                        intent.putExtra(Configs.USER_LONGITUDE,userLongitude);
+                        intent.putExtra(Configs.USER_LATITUDE, userLatitude);
+
                         LoginActivity.this.startActivity(intent);
                         finish(); // to prevent user from coming back to login page when
                         // pressing back button

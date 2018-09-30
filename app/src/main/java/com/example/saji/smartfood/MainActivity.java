@@ -40,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         int userType = extras.getInt(Configs.USER_TYPE);
         String fcmToken = extras.getString(Configs.FIREBASE_TOKEN);
         String emailAddress = extras.getString(Configs.USER_EMAIL);
+        double userLongitude = extras.getDouble(Configs.USER_LONGITUDE);
+        double userLatitude = extras.getDouble(Configs.USER_LATITUDE);
         PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "Dishes", "Orders", "About"} : new String[]{"Food Map", "About"};
-        loggedUser = new UserModel(userID, emailAddress, userType, fcmToken);
+        loggedUser = new UserModel(userID, emailAddress, userType, fcmToken,userLongitude,userLatitude);
 
         // to update FCM if outdated
         Tools.getInstance().checkAndUpdateMyFCM();
@@ -109,7 +111,11 @@ public class MainActivity extends AppCompatActivity {
                             String emailAddress = key.getString(Configs.USER_EMAIL);
                             int userType = key.getInt(Configs.USER_TYPE);
                             String fcmToken = key.getString(Configs.FIREBASE_TOKEN);
-                            UserModel newUser = new UserModel(uid, emailAddress, userType, fcmToken);
+                            double userLongitude = Double.parseDouble(key.getString(Configs.USER_LONGITUDE));
+                            double userLatitude = Double.parseDouble(key.getString(Configs
+                                    .USER_LATITUDE));
+                            UserModel newUser = new UserModel(uid, emailAddress, userType,
+                                    fcmToken,userLongitude,userLatitude);
                             allUsers.add(newUser);
                         }
                     }

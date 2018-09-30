@@ -5,11 +5,11 @@ public abstract class RecipeModel {
     private final UserModel recipeCooker;
     private final String recipeDescription;
     private final double recipePrice;
-
+    private int recipeID;
     public RecipeModel(int recipeID, String recipeName, UserModel recipeCooker, String
             recipeDescription, double
             recipePrice) {
-
+        this.recipeID = recipeID;
         this.recipeName = recipeName;
         this.recipeCooker = recipeCooker;
         this.recipeDescription = recipeDescription;
@@ -30,5 +30,9 @@ public abstract class RecipeModel {
 
     public double getRecipePrice() {
         return recipePrice;
+    }
+
+    public int getRecipeID() {
+        return recipeID;
     }
 }

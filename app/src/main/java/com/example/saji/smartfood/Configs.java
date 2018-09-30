@@ -23,7 +23,10 @@ public class Configs {
             ".com/PlaceAnOder.php";
     public static final String ORDERS_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
             ".com/CookerOrdersRetriever.php";
-
+    public static final String UPDATE_LOCATION_URL ="https://silicotic-vent.000webhostapp.com/UpdateLocation.php";
+    public static final String UPDATE_RECIPE_URL ="https://silicotic-vent.000webhostapp" +
+            ".com/UpdateRecipe.php";
+    public static final String DELETE_RECIPE_URL ="https://silicotic-vent.000webhostapp.com/DeleteRecipe.php";
     // DB related
     public static final String USER_EMAIL = "email_address";
     public static final String USER_PASSWORD = "user_password";
@@ -39,7 +42,11 @@ public class Configs {
     public static final String RECIPE_PRICE = "recipe_price";
     public static final String RECIPE_ID = "recipe_id";
     public static final String RECIPE_LONGITUDE = "recipe_longitude";
+    public static final String USER_LONGITUDE = "user_longitude";
+
     public static final String RECIPE_LATITUDE = "recipe_latitude";
+    public static final String USER_LATITUDE = "user_latitude";
+
     public static final String RECIPE_PURCHASER_ID = "recipe_purchaser_id";
     public static final String RECIPE_TIME_ORDER_PLACED = "time_order_placed";
     public static final String ORDER_ID = "order_id";

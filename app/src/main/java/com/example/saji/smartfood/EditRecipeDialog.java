@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,7 +38,7 @@ public class EditRecipeDialog extends DialogFragment {
     View view;
     private Location lastLocation;
     private DialogInterface.OnDismissListener onDismissListener;
-    private String[] dishDetails = {"", "", ""};
+    private String[] dishDetails = {"","", "", ""};
 
     @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -71,13 +72,48 @@ public class EditRecipeDialog extends DialogFragment {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                //todo Saji do the editing in the FB
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    final String newRecipeName = (recipeName.getText().equals(""))?
+                            dishDetails[0] : String.valueOf(recipeName.getText());
+                    final String newRecipePrice = (recipeName.getText().equals(""))?
+                            dishDetails[1] : String.valueOf(recipePrice.getText());
+                    final String newRecipeDescription = (recipeName.getText().equals(""))?
+                            dishDetails[2] : String.valueOf(recipeDescription.getText());
+                    final String recipeID =dishDetails[3];
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, Configs
+                            .UPDATE_RECIPE_URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            JSONObject jsonResponse;
+                            try {
+                                jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setMessage("Recipe updated successfully").setPositiveButton
+                                            ("Ok",null)
+                                            .create()
+                                            .show();;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, null) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<>();
+                            params.put(Configs.RECIPE_ID, recipeID);
+                            params.put(Configs.RECIPE_NAME, newRecipeName);
+                            params.put(Configs.RECIPE_PRICE, newRecipePrice);
+                            params.put(Configs.RECIPE_DESCRIPTION, newRecipeDescription);
 
-                    String newRecipeName = (recipeName.getText().equals(""))? dishDetails[0] : (String) recipeName.getText();
-                    String newRecipePrice = (recipeName.getText().equals(""))? dishDetails[1] : (String) recipePrice.getText();
-                    String newRecipeDescription = (recipeName.getText().equals(""))? dishDetails[2] : (String) recipeDescription.getText();
+                            return params;
+                        }
 
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    requestQueue.add(stringRequest);
                     editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
 
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -93,8 +129,40 @@ public class EditRecipeDialog extends DialogFragment {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                //todo Saji delete in the FB
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    final String recipeID =dishDetails[3];
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, Configs
+                            .DELETE_RECIPE_URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            JSONObject jsonResponse;
+                            try {
+                                jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setMessage("Recipe deleted successfully")
+                                            .setPositiveButton
+                                            ("Ok",null)
+                                            .create()
+                                            .show();;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, null) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<>();
+                            params.put(Configs.RECIPE_ID, recipeID);
+
+                            return params;
+                        }
+
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    requestQueue.add(stringRequest);
                     deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));

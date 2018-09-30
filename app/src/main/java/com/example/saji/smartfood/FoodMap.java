@@ -85,8 +85,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
                         keyz.next();
                         while (keyz.hasNext()) {
                             JSONObject key = jsonResponse.getJSONObject((String) keyz.next());
-                            double recipeLongitude = key.getDouble(Configs.RECIPE_LONGITUDE);
-                            double recipeLatitude = key.getDouble(Configs.RECIPE_LATITUDE);
+
                             String recipeName = key.getString(Configs.RECIPE_NAME);
                             String recipeDescription = key.getString(Configs.RECIPE_DESCRIPTION);
                             double recipePrice = key.getDouble(Configs.RECIPE_PRICE);
@@ -94,9 +93,12 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
                             int recipeID = key.getInt(Configs.RECIPE_ID);
                             UserModel cooker = findCooker(recipeCookerID);
                             if (cooker==null){
+                                System.out.println("ID"+recipeCookerID);
                                 System.out.println("Cant find cooker in all users");
                                 return;
                             }
+                            double recipeLongitude = cooker.getUserLongitude();
+                            double recipeLatitude = cooker.getUserLatitude();
                             RegularRecipe newRecipe = new RegularRecipe(recipeID,
                                     recipeCookerID,recipeName, cooker, recipeDescription, recipePrice,
                                     recipeLongitude,

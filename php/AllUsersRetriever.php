@@ -15,6 +15,8 @@
 		$curr["user_type"]           = $row["user_type"];
 		$curr["fcm_token"]              = $row["fcm_token"];
 		$curr["uid"]        = $row["uid"];
+		$curr["user_longitude"] = $row["user_longitude"];
+		$curr["user_latitude"] = $row["user_latitude"];
 		$response[$row["uid"]]    = $curr;
 	    }
 	}

@@ -4,13 +4,19 @@ public class UserModel {
     int userID;
     String emailAddress;
     Configs.UserType userType;
-    String fcmToken ;
-    public UserModel(int userID, String emailAddress, int userTypeID,String fcmToken) {
+    String fcmToken;
+    double userLongitude;
+    double userLatitude;
+
+    public UserModel(int userID, String emailAddress, int userTypeID, String fcmToken, double
+            userLongitude, double userLatitude) {
         this.userID = userID;
         this.emailAddress = emailAddress;
-        this.fcmToken= fcmToken;
-        userType = userTypeID == Configs.USER_FOODIE_ID ? Configs.UserType.FOODIE : Configs.UserType
-                .COOKER;
+        this.fcmToken = fcmToken;
+        this.userLongitude= userLongitude;
+        this.userLatitude = userLatitude;
+                userType = userTypeID == Configs.USER_FOODIE_ID ? Configs.UserType.FOODIE : Configs.UserType
+                        .COOKER;
     }
 
     public int getUserID() {
@@ -27,5 +33,13 @@ public class UserModel {
 
     public String getFcmToken() {
         return fcmToken;
+    }
+
+    public double getUserLatitude() {
+        return userLatitude;
+    }
+
+    public double getUserLongitude() {
+        return userLongitude;
     }
 }
