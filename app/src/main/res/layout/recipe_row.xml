@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/holder_drawable">
 
     <ImageView
         android:id="@+id/recipe_picture"
@@ -25,6 +26,7 @@
         android:id="@+id/recipe_cooker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_below="@id/recipe_name"
         android:layout_toEndOf="@id/recipe_picture"
         android:text="Made By:"/>
@@ -39,9 +41,12 @@
 
     <Button
         android:id="@+id/recipe_purchase"
-        android:layout_width="wrap_content"
-        android:layout_height="29dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/button_unclicked_drawable"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:textAlignment="textEnd"
+        android:background="@android:color/transparent"
         android:text="Price" />
 </RelativeLayout>

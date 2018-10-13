@@ -3,6 +3,7 @@ package com.example.saji.smartfood;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,14 +37,16 @@ public class AvailabilityAdapter extends RecyclerView.Adapter<AvailabilityAdapte
         AvailabilityModel currentTime = availabilityModelArrayList.get(position);
         holder.time.setText(currentTime.getTime());
         holder.dishesList = currentTime.getDishesList();
-        holder.availibilityID = currentTime.getAvailabilityID();
+        holder.date.setText(currentTime.getDate());
+        holder.availabilityID = currentTime.getAvailabilityID();
         holder.dishesButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
                 return false;
             }
         });
+
+
 
 //        holder.recipePurchase.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
@@ -66,11 +69,13 @@ public class AvailabilityAdapter extends RecyclerView.Adapter<AvailabilityAdapte
         TextView time;
         String[] dishesList;
         Button dishesButton;
-        String availibilityID;
+        String availabilityID;
+        TextView date;
 
         public ViewHolder(View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
+            date = itemView.findViewById(R.id.date);
             dishesButton = itemView.findViewById(R.id.dishes_list);
         }
     }

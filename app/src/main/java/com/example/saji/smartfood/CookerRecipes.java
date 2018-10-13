@@ -3,6 +3,7 @@ package com.example.saji.smartfood;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,14 +61,22 @@ public class CookerRecipes extends Fragment {
                             loadRecipes();
                         }
                     });
-                    addRecipeButton.setBackground(getContext().getDrawable(R.drawable.button_clicked_drawable));
+                    addRecipeButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    addRecipeButton.setBackground(getContext().getDrawable(R.drawable.button_unclicked_drawable));
+                    addRecipeButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
                 }
                 return false;
             }
         });
         return view;
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible) {
+            loadRecipes();
+        }
     }
 
     // TODO maybe to add ability to save recipes locale instead of loading each time from server
@@ -96,7 +105,7 @@ public class CookerRecipes extends Fragment {
                             // this is temporary, there is no need for recipe cooker since we are
                             // loading our own recipes, however recipe cooker needed for showing
                             // menu for other users
-                            RecipeModel newRecipe = new MyRecipe(recipeID,recipeName, MainActivity
+                            RecipeModel newRecipe = new MyRecipe(recipeID, recipeName, MainActivity
                                     .loggedUser, recipeDescription, recipePrice);
                             recipeModelArrayList.add(newRecipe);
                             recipesRecyclerViewAdapter.notifyDataSetChanged();
@@ -118,8 +127,9 @@ public class CookerRecipes extends Fragment {
         requestQueue.add(recipesRequest);
     }
 
-    public class CustomListener implements View.OnLongClickListener{
+    public class CustomListener implements View.OnLongClickListener {
         private String[] dishDetails = {"", "", "", ""};
+
         @Override
         public boolean onLongClick(View view) {
             EditRecipeDialog editRecipeDialog = new EditRecipeDialog();

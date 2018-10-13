@@ -50,18 +50,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         holder.recipeCooker.setText(currentRecipe.getRecipeCooker().getEmailAddress());
         holder.recipePurchase.setText(String.valueOf(currentRecipe.getRecipePrice()));
         holder.recipeID = currentRecipe.getRecipeID();
-        holder.recipePurchase.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    holder.recipePurchase.setBackground(mInflater.getContext().getDrawable(R.drawable.button_clicked_drawable));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    holder.recipePurchase.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
-                }
-                return false;
-            }
-        });
 
         holder.recipePurchase.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

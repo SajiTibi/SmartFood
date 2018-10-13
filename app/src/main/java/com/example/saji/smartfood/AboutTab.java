@@ -82,11 +82,17 @@ public class AboutTab extends Fragment {
         lastLocation = locationManager.getLastKnownLocation(provider);
 
         final Button updateMyLocationButton = view.findViewById(R.id.update_location);
-        updateMyLocationButton.setOnClickListener(new View.OnClickListener() {
+        updateMyLocationButton.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public void onClick(View view) {
-                System.out.println("HELLO");
-                updateLocation(lastLocation,view);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    updateMyLocationButton.setBackground(getContext().getDrawable(R.drawable.button_clicked_drawable));
+                    updateLocation(lastLocation,view);
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    updateMyLocationButton.setBackground(getContext().getDrawable(R.drawable.button_unclicked_drawable));
+                }
+                return false;
             }
         });
         final Button logoutButton = view.findViewById(R.id.logout_button);

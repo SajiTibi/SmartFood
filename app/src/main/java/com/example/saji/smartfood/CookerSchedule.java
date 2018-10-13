@@ -60,8 +60,17 @@ public class CookerSchedule extends Fragment {
         return view;
     }
 
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible) {
+            loadAvailabileTimes();
+        }
+    }
+
     // TODO maybe to add ability to save recipes locale instead of loading each time from server
     private void loadAvailabileTimes() {
+        //Changed to scheduling
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .RECIPES_RETRIEVAL_URL, new Response.Listener<String>() {
             @Override
@@ -77,8 +86,8 @@ public class CookerSchedule extends Fragment {
                         keyz.next();
                         while (keyz.hasNext()) {
                             JSONObject key = jsonResponse.getJSONObject((String) keyz.next());
-                            String timeID = ""; // todo get the ID time;
-                            String time = ""; // todo get the availability;
+                            String timeID = "123"; // todo get the ID time;
+                            String time = "18:00 - 19:00"; // todo get the availability;
                             String[] dishesList = {""}; // todo get the array of dishes ids which is compatible with the recipe;
                             // recipe id will be needed if cook wishes to modify/delete recipe
                             int recipeID = key.getInt(Configs.RECIPE_ID);
@@ -86,9 +95,9 @@ public class CookerSchedule extends Fragment {
                             // this is temporary, there is no need for recipe cooker since we are
                             // loading our own recipes, however recipe cooker needed for showing
                             // menu for other users
-                            AvailabilityModel newRecipe = new AvailabilityModel(timeID, time, dishesList, MainActivity.loggedUser);
+                            AvailabilityModel newTiming = new AvailabilityModel(timeID, time, dishesList, MainActivity.loggedUser);
 
-                            availabilityModelArrayList.add(newRecipe);
+                            availabilityModelArrayList.add(newTiming);
                             availabilityRecyclerViewAdapter.notifyDataSetChanged();
                         }
                     }
@@ -99,6 +108,7 @@ public class CookerSchedule extends Fragment {
         }, null) {
             @Override
             protected Map<String, String> getParams() {
+                //set it to find the right availability list
                 Map<String, String> params = new HashMap<>();
                 params.put(Configs.RECIPE_COOKER_ID, String.valueOf(MainActivity.loggedUser.userID));
                 return params;
