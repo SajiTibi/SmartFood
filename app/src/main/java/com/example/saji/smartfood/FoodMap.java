@@ -129,7 +129,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
     private void updateMarkersOnMap() {
         mMap.clear();
         for (RegularRecipe recipe : loadedRecipes) {
-            LatLng latLng = new LatLng(recipe.getRecipeLongitude(), recipe.getRecipeLatitude());
+            LatLng latLng = new LatLng( recipe.getRecipeLatitude(),recipe.getRecipeLongitude());
             String recipeDetails = createInfoString(recipe);
             mapMarkers.add(new MarkerOptions().position(latLng).title(recipe.getRecipeName()).snippet
                     (recipeDetails));
