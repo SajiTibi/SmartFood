@@ -45,6 +45,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AboutTab extends Fragment {
     private Location lastLocation;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,8 +82,8 @@ public class AboutTab extends Fragment {
         }
         lastLocation = locationManager.getLastKnownLocation(provider);
         try {
-            List<Address> addresses= geocoder.getFromLocation(lastLocation.getLatitude(),lastLocation.getLongitude(),1);
-            suggestedLocation.setText(suggestedLocation.getText().toString() + addresses.get(0).getAddressLine(0));
+            List<Address> addresses = geocoder.getFromLocation(lastLocation.getLatitude(), lastLocation.getLongitude(), 1);
+            suggestedLocation.setText(addresses.get(0).getAddressLine(0));
             suggestedAddress.setLongitude(addresses.get(0).getLongitude());
             suggestedAddress.setLatitude(addresses.get(0).getLatitude());
 
@@ -99,13 +100,14 @@ public class AboutTab extends Fragment {
                     Location location = new Location("");
                     location.setLongitude(suggestedAddress.getLongitude());
                     location.setLatitude(suggestedAddress.getLatitude());
-                    updateLocation(location,view);
-                }else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    updateLocation(location, view);
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     changeToSuggestedButton.setBackground(getContext().getDrawable(R.drawable.button_unclicked_drawable));
                 }
-                    return false;
+                return false;
             }
         });
+
         final Button updateMyLocationButton = view.findViewById(R.id.update_location);
         updateMyLocationButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -114,16 +116,16 @@ public class AboutTab extends Fragment {
                     updateMyLocationButton.setBackground(getContext().getDrawable(R.drawable.button_clicked_drawable));
                     String enteredLocation = enterLocation.getText().toString();
                     try {
-                        List<Address> addresses = geocoder.getFromLocationName(enteredLocation,1);
-                        if (addresses.size()==0){
-                            Snackbar.make(view,"Invalid location, please try again",Snackbar.LENGTH_SHORT).show();
-                        }else{
-                            Address foundAddress =addresses.get(0);
+                        List<Address> addresses = geocoder.getFromLocationName(enteredLocation, 1);
+                        if (addresses.size() == 0) {
+                            Snackbar.make(view, "Invalid location, please try again", Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            Address foundAddress = addresses.get(0);
                             Location location = new Location("");
                             location.setLongitude(foundAddress.getLongitude());
                             location.setLatitude(foundAddress.getLatitude());
-                            Snackbar.make(view,"changed to: "+foundAddress.getAddressLine(0),Snackbar.LENGTH_LONG).show();
-                            updateLocation(location,view);
+                            Snackbar.make(view, "changed to: " + foundAddress.getAddressLine(0), Snackbar.LENGTH_LONG).show();
+                            updateLocation(location, view);
 
                         }
                     } catch (IOException e) {
@@ -140,9 +142,9 @@ public class AboutTab extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    logoutButton.setBackground(getContext().getDrawable(R.drawable.button_clicked_drawable));
+                    logoutButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    logoutButton.setBackground(getContext().getDrawable(R.drawable.button_unclicked_drawable));
+                    logoutButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
                     //Deleting saved user & password
                     final String NONE = "";
                     final String PREF = "User";
@@ -176,7 +178,7 @@ public class AboutTab extends Fragment {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Location updated").setPositiveButton("Ok",null)
+                        builder.setMessage("Location updated").setPositiveButton("Ok", null)
                                 .create()
                                 .show();
                     }

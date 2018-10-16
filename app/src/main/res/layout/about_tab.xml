@@ -1,69 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center_horizontal|center_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
         android:id="@+id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:text="UID: "/>
 
     <TextView
         android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Email address: "/>
+        android:text="Email address: "
+        android:layout_below="@+id/user_id"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/user_type"
         android:hint="User Type"
         android:textAlignment="center"
+        android:layout_below="@+id/user_email"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
-    <TextView
-        android:id="@+id/suggested_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Suggested location:" />
-
-    <Button
-        android:id="@+id/change_to_this_location_button"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_unclicked_drawable"
-        android:text="Change to this location" />
+        android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/user_entered_loaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Or enter your location"
+        android:textSize="15sp"
+        android:layout_marginTop="30dp"
+        android:hint="New Location Address"
         android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/suggested_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Suggested location:" />
+
+    <Button
+        android:id="@+id/change_to_this_location_button"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:background="@drawable/button_unclicked_drawable"
+        android:text="Change Location" />
+
 
     <Button
         android:id="@+id/update_location"
-        android:layout_width="180dp"
-        android:layout_height="30dp"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:textSize="14sp"
+        android:layout_marginTop="15dp"
+        android:textAllCaps="false"
         android:background="@drawable/button_unclicked_drawable"
-        android:text="Update location" />
+        android:text="Set Current Location"
+        />
 
     <Button
         android:id="@+id/logout_button"
-        android:layout_marginTop="25dp"
-        android:layout_width="76dp"
-        android:layout_height="30dp"
-        android:background="@drawable/button_unclicked_drawable"
+        android:layout_marginTop="60dp"
+        android:layout_width="130dp"
+        android:textAllCaps="false"
+        android:layout_height="35dp"
+        android:textSize="20sp"
+        android:background="@drawable/dialog_button_unclicked_drawable"
         android:text="Logout" />
 
 </LinearLayout>
