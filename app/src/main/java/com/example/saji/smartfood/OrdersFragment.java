@@ -39,6 +39,14 @@ public class OrdersFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible) {
+            loadOrders();
+        }
+    }
+
     private void loadOrders() {
         StringRequest ordersRequest = new StringRequest(Request.Method.POST, Configs
                 .ORDERS_RETRIEVAL_URL, new Response.Listener<String>() {

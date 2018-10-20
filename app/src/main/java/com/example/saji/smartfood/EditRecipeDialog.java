@@ -68,11 +68,13 @@ public class EditRecipeDialog extends DialogFragment {
             return null;
         }
         lastLocation = locationManager.getLastKnownLocation(provider);
+
         editButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                     final String newRecipeName = (recipeName.getText().equals(""))?
                             dishDetails[0] : String.valueOf(recipeName.getText());
                     final String newRecipePrice = (recipeName.getText().equals(""))?
@@ -114,8 +116,6 @@ public class EditRecipeDialog extends DialogFragment {
                     };
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     requestQueue.add(stringRequest);
-                    editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
-
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
                     editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
@@ -130,6 +130,7 @@ public class EditRecipeDialog extends DialogFragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                     final String recipeID =dishDetails[3];
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, Configs
                             .DELETE_RECIPE_URL, new Response.Listener<String>() {
@@ -163,7 +164,6 @@ public class EditRecipeDialog extends DialogFragment {
                     };
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     requestQueue.add(stringRequest);
-                    deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
                 }

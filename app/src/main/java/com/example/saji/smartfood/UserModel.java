@@ -13,10 +13,10 @@ public class UserModel {
         this.userID = userID;
         this.emailAddress = emailAddress;
         this.fcmToken = fcmToken;
-        this.userLongitude= userLongitude;
+        this.userLongitude = userLongitude;
         this.userLatitude = userLatitude;
-                userType = userTypeID == Configs.USER_FOODIE_ID ? Configs.UserType.FOODIE : Configs.UserType
-                        .COOKER;
+        this.userType = userTypeID == Configs.USER_FOODIE_ID ? Configs.UserType.FOODIE : Configs.UserType
+                .COOKER;
     }
 
     public int getUserID() {

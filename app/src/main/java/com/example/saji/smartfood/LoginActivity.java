@@ -142,8 +142,8 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra(Configs.USER_ID, userID);
                         intent.putExtra(Configs.USER_EMAIL, mEmailView.getText().toString());
                         intent.putExtra(Configs.USER_TYPE, userType);
-                        intent.putExtra(Configs.FIREBASE_TOKEN,fcmToken);
-                        intent.putExtra(Configs.USER_LONGITUDE,userLongitude);
+                        intent.putExtra(Configs.FIREBASE_TOKEN, fcmToken);
+                        intent.putExtra(Configs.USER_LONGITUDE, userLongitude);
                         intent.putExtra(Configs.USER_LATITUDE, userLatitude);
 
                         LoginActivity.this.startActivity(intent);

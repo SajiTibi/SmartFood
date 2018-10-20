@@ -66,29 +66,35 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="165dp"
-                android:layout_height="32dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/button_unclicked_drawable"
-                android:text="SIGN IN"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                >
+                <Button
+                    android:id="@+id/email_sign_in_button"
+                    android:layout_width="120dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/button_unclicked_drawable"
+                    android:text="SIGN IN"
+                    android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/register_button"
-                android:layout_width="165dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_unclicked_drawable"
-                android:text="REGISTER"
-                android:textStyle="bold"/>
-
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="120dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/button_unclicked_drawable"
+                    android:text="REGISTER"
+                    android:textStyle="bold"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
