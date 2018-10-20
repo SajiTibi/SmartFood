@@ -22,39 +22,31 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class OrdersFragment extends Fragment {
+public class MyCart extends Fragment {
     RecyclerView ordersRecyclerView;
     RecyclerView.Adapter ordersRecyclerViewAdapter;
     ArrayList<OrderModule> ordersModelArrayList;
 
-    @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.orders_list,container,false);
-        ordersRecyclerView = view.findViewById(R.id.orders_recycler_view);
+        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.my_cart, container, false);
+        ordersRecyclerView = view.findViewById(R.id.my_cart_recycler);
         ordersModelArrayList = new ArrayList<>();
         loadOrders();
-        ordersRecyclerViewAdapter = new OrdersAdapter(getContext(),ordersModelArrayList);
+        ordersRecyclerViewAdapter = new OrderedRecipeAdapter(getContext(), ordersModelArrayList);
         ordersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ordersRecyclerView.setAdapter(ordersRecyclerViewAdapter);
         return view;
     }
 
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
-        super.setMenuVisibility(menuVisible);
-        if (menuVisible) {
-            loadOrders();
-        }
-    }
-
     private void loadOrders() {
         StringRequest ordersRequest = new StringRequest(Request.Method.POST, Configs
-                .ORDERS_RETRIEVAL_URL, new Response.Listener<String>() {
+                .CART_RETRIEVER_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    // we got response as json array within nesed json array so we iterate
-                    // through them all to get all recipes
+                    System.out.println("RES"+response);
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
@@ -68,7 +60,7 @@ public class OrdersFragment extends Fragment {
                             int recipeID = key.getInt(Configs.RECIPE_ID);
                             int purchaserID = key.getInt(Configs.RECIPE_PURCHASER_ID);
                             int orderStatus = key.getInt(Configs.ORDER_STATUS);
-                            OrderModule newOrder = new OrderModule(orderID,recipeID,purchaserID,
+                            OrderModule newOrder = new OrderModule(orderID, recipeID, purchaserID,
                                     purchaseTime, orderStatus);
                             ordersModelArrayList.add(newOrder);
                             ordersRecyclerViewAdapter.notifyDataSetChanged();
@@ -82,12 +74,12 @@ public class OrdersFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put(Configs.RECIPE_COOKER_ID, String.valueOf(MainActivity.loggedUser.getUserID()));
+                params.put(Configs.RECIPE_PURCHASER_ID, String.valueOf(MainActivity.loggedUser.getUserID()));
                 return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(ordersRequest);
     }
-
 }
+

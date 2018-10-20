@@ -3,7 +3,6 @@ package com.example.saji.smartfood;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,7 +78,6 @@ public class CookerRecipes extends Fragment {
         }
     }
 
-    // TODO maybe to add ability to save recipes locale instead of loading each time from server
     private void loadRecipes() {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .RECIPES_RETRIEVAL_URL, new Response.Listener<String>() {

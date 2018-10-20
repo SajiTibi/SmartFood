@@ -16,6 +16,7 @@
 		$curr["time_order_placed"]           = $row["time_order_placed"];
 		$curr["order_id"]        = $row["order_id"];
 		$curr["recipe_id"]        = $row["recipe_id"];
+		$curr["order_status"]        = $row["order_status"];
 		$response[$row["order_id"]]    = $curr;
 	    }
 	}
