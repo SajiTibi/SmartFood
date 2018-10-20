@@ -54,7 +54,7 @@ public class OrdersFragment extends Fragment {
             public void onResponse(String response) {
                 try {
                     // we got response as json array within nesed json array so we iterate
-                    // throught them all to get all recipes
+                    // through them all to get all recipes
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
@@ -67,8 +67,9 @@ public class OrdersFragment extends Fragment {
                             int orderID = key.getInt(Configs.ORDER_ID);
                             int recipeID = key.getInt(Configs.RECIPE_ID);
                             int purchaserID = key.getInt(Configs.RECIPE_PURCHASER_ID);
+                            int orderState = 0; //todo Saji add the state to the data base;
                             OrderModule newOrder = new OrderModule(orderID,recipeID,purchaserID,
-                                    purchaseTime);
+                                    purchaseTime, orderState);
                             ordersModelArrayList.add(newOrder);
                             ordersRecyclerViewAdapter.notifyDataSetChanged();
                         }

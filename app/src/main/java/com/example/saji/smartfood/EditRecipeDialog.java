@@ -95,7 +95,7 @@ public class EditRecipeDialog extends DialogFragment {
                                     builder.setMessage("Recipe updated successfully").setPositiveButton
                                             ("Ok",null)
                                             .create()
-                                            .show();;
+                                            .show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

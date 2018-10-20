@@ -5,11 +5,13 @@ public class OrderModule {
     private int recipePurchaserID;
     private String purchaseTime;
     private int recipeID;
-    public OrderModule(int orderID,int recipeID, int recipePurchaserID, String purchaseTime){
+    private int state;
+    public OrderModule(int orderID,int recipeID, int recipePurchaserID, String purchaseTime, int state){
     this.orderID = orderID;
     this.recipeID=recipeID;
     this.recipePurchaserID = recipePurchaserID;
     this.purchaseTime = purchaseTime;
+    this.state = state;
     }
 
     public int getOrderID(){
@@ -26,5 +28,9 @@ public class OrderModule {
 
     public int getRecipeID() {
         return recipeID;
+    }
+
+    public int getState() {
+        return state;
     }
 }
