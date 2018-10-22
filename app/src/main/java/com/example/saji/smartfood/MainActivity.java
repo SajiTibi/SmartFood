@@ -22,8 +22,8 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
     private static int numberOfPages;
-    private static final int COOK_PAGES_NUM = 5;
-    private static final int FOODIE_PAGES_NUM = 2;
+    private static final int COOK_PAGES_NUM = 6;
+    private static final int FOODIE_PAGES_NUM = 3;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     static UserModel loggedUser;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.home_page);
         Bundle extras = getIntent().getExtras();
         allUsers = new ArrayList<>();
-        allRecipes= new ArrayList<>();
+        allRecipes = new ArrayList<>();
         int userID = extras.getInt(Configs.USER_ID);
         int userType = extras.getInt(Configs.USER_TYPE);
         String fcmToken = extras.getString(Configs.FIREBASE_TOKEN);
@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         double userLongitude = extras.getDouble(Configs.USER_LONGITUDE);
         double userLatitude = extras.getDouble(Configs.USER_LATITUDE);
 
-        PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "Dishes",
-                "Orders","MyCart", "About"} : new String[]{"Food Map", "About"};
-        loggedUser = new UserModel(userID, emailAddress, userType, fcmToken,userLongitude,userLatitude);
+        PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "My Cart",
+                "Dishes", "My Reviews", "Orders", "About"} : new String[]{"Food Map", "My Cart", "About"};
+        loggedUser = new UserModel(userID, emailAddress, userType, fcmToken, userLongitude, userLatitude);
 
         // to update FCM if outdated
         Tools.getInstance().checkAndUpdateMyFCM();
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -77,11 +78,13 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         return new FoodMap();
                     case 1:
-                        return new CookerRecipes();
-                    case 2:
-                        return new OrdersFragment();
-                    case 3:
                         return new MyCart();
+                    case 2:
+                        return new CookerRecipes();
+                    case 3:
+                        return new ReviewsMarkerFragment(MainActivity.loggedUser.getUserID());
+                    case 4:
+                        return new OrdersFragment();
                 }
             } else {
                 return new AboutTab();
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                             double userLatitude = Double.parseDouble(key.getString(Configs
                                     .USER_LATITUDE));
                             UserModel newUser = new UserModel(uid, emailAddress, userType,
-                                    fcmToken,userLongitude,userLatitude);
+                                    fcmToken, userLongitude, userLatitude);
                             allUsers.add(newUser);
                         }
                     }
@@ -136,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(recipesRequest);
 
     }
+
     private void loadAllRecipes() {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .ALL_RECIPES_RETRIEVAL_URL, new Response.Listener<String>() {

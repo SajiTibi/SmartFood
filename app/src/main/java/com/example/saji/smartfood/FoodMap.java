@@ -323,10 +323,10 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    CookerDishesDialog cookerDishesDialog = new CookerDishesDialog();
-                    cookerDishesDialog.setCookerID(Integer.valueOf(cookerID));
-                    cookerDishesDialog.setCookerDishes(cookersDishes.get(Integer.valueOf(cookerID)));
-                    cookerDishesDialog.show(getFragmentManager(), "CookerDishesDialog");
+                    MapMarkerDialog currDialog = new MapMarkerDialog();
+                    currDialog.setCookerID(Integer.valueOf(cookerID));
+                    currDialog.setCookerDishes(cookersDishes.get(Integer.valueOf(cookerID)));
+                    currDialog.show(getFragmentManager(), "CookerMarkerDialog");
                 }
             });
             return myContestView;

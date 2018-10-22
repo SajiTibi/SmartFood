@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPassword1;
     private EditText mPassword2;
     private Location lastLocation;
+    private final String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -69,16 +70,22 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    registerButton.setBackground(getDrawable(R.drawable.button_unclicked_drawable));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     registerButton.setBackground(getDrawable(R.drawable.button_clicked_drawable));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    registerButton.setBackground(getDrawable(R.drawable.button_unclicked_drawable));
                     RadioGroup userType = findViewById(R.id.user_type_group);
                     final int selectedButtonID = userType.getCheckedRadioButtonId();
-                    if (mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
-                        // since there is only two selections we will pass 1 if foodie, 0 if cooker
-                        attemptRegister(selectedButtonID == R.id.foodie_button ? 1 : 0);
+                    if (mEmail.getText().toString().matches(emailRegex)) {
+                        if (!mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
+                            Snackbar.make(view, "Your Password is Shorter than 6 Letters!", Snackbar.LENGTH_SHORT).show();
+                        } else if (mPassword1.getText().toString().length() < 6) {
+                            Snackbar.make(view, "Make Sure Both Passwords Match!", Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            // since there is only two selections we will pass 1 if foodie, 0 if cooker
+                            attemptRegister(selectedButtonID == R.id.foodie_button ? 1 : 0);
+                        }
                     } else {
-                        Snackbar.make(view, "Make sure both passwords match", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(view, "Invalid E-mail!", Snackbar.LENGTH_SHORT).show();
                     }
                 }
                 return false;
@@ -115,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                        builder.setMessage("Register Failed: email already is taken")
+                        builder.setMessage("Register Failed: E-mail is Already Used!")
                                 .setNegativeButton("Retry", null)
                                 .create()
                                 .show();
