@@ -31,6 +31,12 @@ public class Configs {
             ".com/UpdateOrderStatus.php";
     public static final String CART_RETRIEVER_URL = "https://silicotic-vent.000webhostapp" +
             ".com/MyCartRetriever.php";
+    public static final String REVIEW_ADD_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/ReviewAdd.php";
+    public static final String REVIEW_RETRIEVER_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/ReviewsRetriever.php";
+    public static final String DELETE_ORDER_URL = "https://silicotic-vent.000webhostapp" +
+            ".com/DeleteOrder.php";
     // DB related
     public static final String USER_EMAIL = "email_address";
     public static final String USER_PASSWORD = "user_password";
@@ -50,6 +56,13 @@ public class Configs {
 
     public static final String RECIPE_LATITUDE = "recipe_latitude";
     public static final String USER_LATITUDE = "user_latitude";
+    public static final String REVIEWED_ID = "reviewed_id";
+    public static final String REVIEWER_ID = "reviewer_id";
+    public static final String REVIEW_ID = "review_id";
+    public static final String REVIEW_NAME = "review_name";
+    public static final String REVIEW_DATE = "review_date";
+
+    public static final String REVIEW_DESCRIPTION = "review_description";
 
     public static final String RECIPE_PURCHASER_ID = "recipe_purchaser_id";
     public static final String RECIPE_TIME_ORDER_PLACED = "time_order_placed";

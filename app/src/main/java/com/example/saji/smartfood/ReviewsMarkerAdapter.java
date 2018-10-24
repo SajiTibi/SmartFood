@@ -3,10 +3,8 @@ package com.example.saji.smartfood;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class ReviewsMarkerAdapter extends RecyclerView.Adapter<ReviewsMarkerAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
-            reviewerName = itemView.findViewById(R.id.review_name);
+            reviewerName = itemView.findViewById(R.id.review_name_create);
             reviewBody = itemView.findViewById(R.id.review_body);
             date = itemView.findViewById(R.id.review_date);
         }

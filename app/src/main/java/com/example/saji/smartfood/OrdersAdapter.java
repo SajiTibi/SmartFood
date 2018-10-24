@@ -76,7 +76,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                     holder.acceptOrder.setVisibility(View.GONE);
                     holder.rejectOrder.setVisibility(View.GONE);
                     holder.finishOrder.setVisibility(View.VISIBLE);
-                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_ACCEPTED);
+                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_ACCEPTED,
+                            ordersModelArrayList.indexOf(orderModule));
                 } else {
                     holder.acceptOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
                 }
@@ -89,7 +90,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     holder.rejectOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_clicked_drawable));
-                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_REJECTED);
+                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_REJECTED,  ordersModelArrayList.indexOf(orderModule));
 
                 } else {
                     holder.rejectOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
@@ -105,7 +106,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                     holder.finishOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                     holder.finishOrder.setVisibility(View.GONE);
                     holder.doneOrder.setVisibility(View.VISIBLE);
-                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_FINISHED);
+                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_FINISHED,  ordersModelArrayList.indexOf(orderModule));
 
                 } else {
                     holder.finishOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
@@ -120,17 +121,57 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         });
 
         holder.doneOrder.setOnLongClickListener(new View.OnLongClickListener() {
+
             @Override
             public boolean onLongClick(View view) {
-                //todo Saji Delete From Data Base/ Meaning that the customer took his Order.
-                //@Rony: maybe keep it as history?
+                deleteOrder(orderModule.getOrderID(),ordersModelArrayList.indexOf(orderModule));
                 return false;
             }
         });
 
     }
 
-    private void updateOrderStatus(final int orderID, final String newOrderStatus) {
+    /**
+     *
+     * @param orderID order id
+     * @param orderIndex order index to remove from ArrayList
+     */
+    private void deleteOrder(final int orderID, final int orderIndex) {
+        StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
+                .DELETE_ORDER_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        System.out.println("success");
+                        ordersModelArrayList.remove(orderIndex);
+                        notifyDataSetChanged();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Order deleted successfully")
+                                .setPositiveButton
+                                        ("Ok",null)
+                                .create()
+                                .show();;
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+        }, null) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put(Configs.ORDER_ID, String.valueOf(orderID));
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(recipesRequest);
+    }
+
+    private void updateOrderStatus(final int orderID, final String newOrderStatus,int orderIndex) {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .UPDATE_ORDER_STATUS_URL, new Response.Listener<String>() {
             @Override
