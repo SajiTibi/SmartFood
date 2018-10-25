@@ -13,6 +13,7 @@ public class RegisterRequest extends StringRequest {
     private String password;
     private int userType;
     private Location location;
+
     RegisterRequest(String email, String password, int userType, Location location, Response
             .Listener<String>
             listener) {
@@ -20,7 +21,7 @@ public class RegisterRequest extends StringRequest {
         this.email = email;
         this.password = password;
         this.userType = userType;
-        this.location= location;
+        this.location = location;
     }
 
     @Override
@@ -29,8 +30,8 @@ public class RegisterRequest extends StringRequest {
         params.put(Configs.USER_EMAIL, email);
         params.put(Configs.USER_PASSWORD, password);
         params.put(Configs.USER_TYPE, String.valueOf(userType));
-        params.put(Configs.USER_LONGITUDE,String.valueOf(location.getLongitude()));
-        params.put(Configs.USER_LATITUDE,String.valueOf(location.getLatitude()));
+        params.put(Configs.USER_LONGITUDE, String.valueOf(location.getLongitude()));
+        params.put(Configs.USER_LATITUDE, String.valueOf(location.getLatitude()));
         return params;
     }
 }

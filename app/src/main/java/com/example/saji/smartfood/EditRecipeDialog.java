@@ -38,7 +38,7 @@ public class EditRecipeDialog extends DialogFragment {
     View view;
     private Location lastLocation;
     private DialogInterface.OnDismissListener onDismissListener;
-    private String[] dishDetails = {"","", "", ""};
+    private String[] dishDetails = {"", "", "", ""};
 
     @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -73,15 +73,15 @@ public class EditRecipeDialog extends DialogFragment {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
-                    final String newRecipeName = (recipeName.getText().equals(""))?
+                    final String newRecipeName = (recipeName.getText().equals("")) ?
                             dishDetails[0] : String.valueOf(recipeName.getText());
-                    final String newRecipePrice = (recipeName.getText().equals(""))?
+                    final String newRecipePrice = (recipeName.getText().equals("")) ?
                             dishDetails[1] : String.valueOf(recipePrice.getText());
-                    final String newRecipeDescription = (recipeName.getText().equals(""))?
+                    final String newRecipeDescription = (recipeName.getText().equals("")) ?
                             dishDetails[2] : String.valueOf(recipeDescription.getText());
-                    final String recipeID =dishDetails[3];
+                    final String recipeID = dishDetails[3];
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, Configs
                             .UPDATE_RECIPE_URL, new Response.Listener<String>() {
                         @Override
@@ -93,7 +93,7 @@ public class EditRecipeDialog extends DialogFragment {
                                 if (success) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                     builder.setMessage("Recipe updated successfully").setPositiveButton
-                                            ("Ok",null)
+                                            ("Ok", null)
                                             .create()
                                             .show();
                                 }
@@ -116,11 +116,11 @@ public class EditRecipeDialog extends DialogFragment {
                     };
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     requestQueue.add(stringRequest);
-                } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
                     editButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                    getDialog().dismiss();
                 }
-                getDialog().dismiss();
                 return false;
             }
         });
@@ -129,9 +129,9 @@ public class EditRecipeDialog extends DialogFragment {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
-                    final String recipeID =dishDetails[3];
+                    final String recipeID = dishDetails[3];
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, Configs
                             .DELETE_RECIPE_URL, new Response.Listener<String>() {
                         @Override
@@ -144,9 +144,10 @@ public class EditRecipeDialog extends DialogFragment {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                     builder.setMessage("Recipe deleted successfully")
                                             .setPositiveButton
-                                            ("Ok",null)
+                                                    ("Ok", null)
                                             .create()
-                                            .show();;
+                                            .show();
+                                    ;
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -164,10 +165,10 @@ public class EditRecipeDialog extends DialogFragment {
                     };
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     requestQueue.add(stringRequest);
-                } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     deleteButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                    getDialog().dismiss();
                 }
-                getDialog().dismiss();
                 return false;
             }
         });

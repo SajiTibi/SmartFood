@@ -7,11 +7,12 @@ import android.content.Context;
 public class SmartFood extends Application {
     private SmartFood instance;
     private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        instance= this;
-        SmartFood.context =getApplicationContext();
+        instance = this;
+        SmartFood.context = getApplicationContext();
 
     }
 

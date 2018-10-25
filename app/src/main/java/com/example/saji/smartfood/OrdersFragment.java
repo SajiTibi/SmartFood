@@ -29,11 +29,11 @@ public class OrdersFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.orders_list,container,false);
+        View view = inflater.inflate(R.layout.orders_list, container, false);
         ordersRecyclerView = view.findViewById(R.id.orders_recycler_view);
         ordersModelArrayList = new ArrayList<>();
         loadOrders();
-        ordersRecyclerViewAdapter = new OrdersAdapter(getContext(),ordersModelArrayList);
+        ordersRecyclerViewAdapter = new OrdersAdapter(getContext(), ordersModelArrayList);
         ordersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ordersRecyclerView.setAdapter(ordersRecyclerViewAdapter);
         return view;
@@ -68,7 +68,7 @@ public class OrdersFragment extends Fragment {
                             int recipeID = key.getInt(Configs.RECIPE_ID);
                             int purchaserID = key.getInt(Configs.RECIPE_PURCHASER_ID);
                             int orderStatus = key.getInt(Configs.ORDER_STATUS);
-                            OrderModule newOrder = new OrderModule(orderID,recipeID,purchaserID,
+                            OrderModule newOrder = new OrderModule(orderID, recipeID, purchaserID,
                                     purchaseTime, orderStatus);
                             ordersModelArrayList.add(newOrder);
                             ordersRecyclerViewAdapter.notifyDataSetChanged();

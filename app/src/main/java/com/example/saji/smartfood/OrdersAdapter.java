@@ -32,10 +32,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     ArrayList<OrderModule> ordersModelArrayList;
     private LayoutInflater mInflater;
     private Context context;
+
     public OrdersAdapter(Context context, ArrayList<OrderModule> ordersModelArrayList) {
         this.ordersModelArrayList = ordersModelArrayList;
         mInflater = LayoutInflater.from(context);
-        this.context= context;
+        this.context = context;
     }
 
     @Override
@@ -50,13 +51,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final OrderModule orderModule = ordersModelArrayList.get(position);
         int state = orderModule.getState();
-        // TODO rony handle rejected, db already know if its rejected only left to change here
+
         // when its loaded in adapter. also see File:Configs ORDER_STATUS_ACCEPTED and other
         // variables if its matches your definition (as 0,1,2).
 
-        final Integer ACCE_REJ_BUTTON_VISIBILITY = (state == 0) ? View.VISIBLE: View.GONE;
-        final Integer FINISH_BUTTON_VISIBILITY = (state == 1) ? View.VISIBLE: View.GONE;
-        final Integer DONE_BUTTON_VISIBILITY = (state == 2) ? View.VISIBLE: View.GONE;
+        final Integer ACCE_REJ_BUTTON_VISIBILITY = (state == Integer.valueOf(Configs.ORDER_STATUS_PENDING)) ? View.VISIBLE : View.GONE;
+        final Integer FINISH_BUTTON_VISIBILITY = (state == Integer.valueOf(Configs.ORDER_STATUS_ACCEPTED)) ? View.VISIBLE : View.GONE;
+        final Integer DONE_BUTTON_VISIBILITY = (state == Integer.valueOf(Configs.ORDER_STATUS_FINISHED)) ? View.VISIBLE : View.GONE;
 
         holder.acceptOrder.setVisibility(ACCE_REJ_BUTTON_VISIBILITY);
         holder.rejectOrder.setVisibility(ACCE_REJ_BUTTON_VISIBILITY);
@@ -76,9 +77,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                     holder.acceptOrder.setVisibility(View.GONE);
                     holder.rejectOrder.setVisibility(View.GONE);
                     holder.finishOrder.setVisibility(View.VISIBLE);
-                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_ACCEPTED,
+                    updateOrderStatus(orderModule.getOrderID(), Configs.ORDER_STATUS_ACCEPTED,
                             ordersModelArrayList.indexOf(orderModule));
-                } else {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     holder.acceptOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
                 }
                 return false;
@@ -90,9 +91,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     holder.rejectOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_clicked_drawable));
-                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_REJECTED,  ordersModelArrayList.indexOf(orderModule));
+                    updateOrderStatus(orderModule.getOrderID(), Configs.ORDER_STATUS_REJECTED, ordersModelArrayList.indexOf(orderModule));
 
-                } else {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     holder.rejectOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
                 }
                 return false;
@@ -106,13 +107,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                     holder.finishOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                     holder.finishOrder.setVisibility(View.GONE);
                     holder.doneOrder.setVisibility(View.VISIBLE);
-                    updateOrderStatus(orderModule.getOrderID(),Configs.ORDER_STATUS_FINISHED,  ordersModelArrayList.indexOf(orderModule));
+                    updateOrderStatus(orderModule.getOrderID(), Configs.ORDER_STATUS_FINISHED, ordersModelArrayList.indexOf(orderModule));
 
-                } else {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     holder.finishOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
                     AlertDialog.Builder builder = new AlertDialog.Builder(mInflater.getContext());
                     builder.setMessage("Long Click to Approve That The Customer Got his/her Order!").setPositiveButton
-                            ("Ok",null)
+                            ("Ok", null)
                             .create()
                             .show();
                 }
@@ -124,7 +125,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
             @Override
             public boolean onLongClick(View view) {
-                deleteOrder(orderModule.getOrderID(),ordersModelArrayList.indexOf(orderModule));
+                deleteOrder(orderModule.getOrderID(), ordersModelArrayList.indexOf(orderModule));
                 return false;
             }
         });
@@ -132,8 +133,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     }
 
     /**
-     *
-     * @param orderID order id
+     * @param orderID    order id
      * @param orderIndex order index to remove from ArrayList
      */
     private void deleteOrder(final int orderID, final int orderIndex) {
@@ -151,9 +151,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Order deleted successfully")
                                 .setPositiveButton
-                                        ("Ok",null)
+                                        ("Ok", null)
                                 .create()
-                                .show();;
+                                .show();
+                        ;
                     }
                 } catch (JSONException e) {
 
@@ -171,7 +172,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         requestQueue.add(recipesRequest);
     }
 
-    private void updateOrderStatus(final int orderID, final String newOrderStatus,int orderIndex) {
+    private void updateOrderStatus(final int orderID, final String newOrderStatus, int orderIndex) {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .UPDATE_ORDER_STATUS_URL, new Response.Listener<String>() {
             @Override
@@ -212,6 +213,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         Button acceptOrder;
         Button rejectOrder;
         Button doneOrder;
+
         public ViewHolder(View itemView) {
             super(itemView);
             orderCreator = itemView.findViewById(R.id.order_creator);

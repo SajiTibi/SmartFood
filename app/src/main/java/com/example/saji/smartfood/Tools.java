@@ -54,7 +54,7 @@ public class Tools {
                             String currentFCMToken = FirebaseInstanceId.getInstance().getToken();
                             // if we have outdated fcm we add the new one
                             if (!loadedFCMToken.equals(currentFCMToken)) {
-                                registerToken(currentFCMToken) ;
+                                registerToken(currentFCMToken);
                             }
                         }
                     }
@@ -98,7 +98,7 @@ public class Tools {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(Configs.FIREBASE_TOKEN, token);
                 params.put(Configs.USER_ID, String.valueOf(MainActivity.loggedUser.getUserID()));
-                System.out.println("to up"+ String.valueOf(MainActivity.loggedUser.getUserID()));
+                System.out.println("to up" + String.valueOf(MainActivity.loggedUser.getUserID()));
                 return params;
             }
         };

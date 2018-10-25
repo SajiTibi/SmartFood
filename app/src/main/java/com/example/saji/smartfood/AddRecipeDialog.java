@@ -79,9 +79,9 @@ public class AddRecipeDialog extends DialogFragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     cancelButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_clicked_drawable));
-                    getDialog().dismiss();
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     cancelButton.setBackground(getContext().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                    getDialog().dismiss();
                 }
                 return false;
             }

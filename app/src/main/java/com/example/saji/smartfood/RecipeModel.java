@@ -6,9 +6,10 @@ public abstract class RecipeModel {
     private final String recipeDescription;
     private final double recipePrice;
     private int recipeID;
+
     public RecipeModel(int recipeID, String recipeName, UserModel recipeCooker, String
             recipeDescription, double
-            recipePrice) {
+                               recipePrice) {
         this.recipeID = recipeID;
         this.recipeName = recipeName;
         this.recipeCooker = recipeCooker;

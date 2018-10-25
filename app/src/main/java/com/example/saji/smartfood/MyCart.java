@@ -46,7 +46,7 @@ public class MyCart extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
-                    System.out.println("RES"+response);
+                    System.out.println("RES" + response);
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {

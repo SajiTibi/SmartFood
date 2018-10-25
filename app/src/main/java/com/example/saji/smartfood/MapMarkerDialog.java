@@ -58,13 +58,13 @@ public class MapMarkerDialog extends DialogFragment {
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    public ScreenSlidePagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            if(position == 0) {
+            if (position == 0) {
                 DishesMarkerFragment dialog = new DishesMarkerFragment();
                 dialog.setCookerDishes(cookerDishes);
                 dialog.setCookerID(cookerID);
@@ -77,7 +77,7 @@ public class MapMarkerDialog extends DialogFragment {
         }
 
         @Override
-        public CharSequence getPageTitle ( int position){
+        public CharSequence getPageTitle(int position) {
             return page_titles[position];
         }
 

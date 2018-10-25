@@ -27,6 +27,7 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
     private Context context;
     private LayoutInflater mInflater;
     private Geocoder geocoder;
+
     public OrderedRecipeAdapter(Context context, ArrayList<OrderModule> orderModuleArrayList) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
@@ -46,13 +47,13 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         OrderModule currOrder = orderModuleArrayList.get(position);
         RegularRecipe currRecipe = findRecipe(currOrder.getRecipeID());
-        if (currRecipe==null){
+        if (currRecipe == null) {
             return;
         }
         String locationName = "";
         try {
-            locationName = geocoder.getFromLocation(currRecipe.getRecipeLatitude(),currRecipe
-                    .getRecipeLongitude(),1).get(0).getAddressLine(0);
+            locationName = geocoder.getFromLocation(currRecipe.getRecipeLatitude(), currRecipe
+                    .getRecipeLongitude(), 1).get(0).getAddressLine(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,8 +77,8 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
     }
 
     private RegularRecipe findRecipe(int recipeID) {
-        System.out.println("SOIZE"+MainActivity.allRecipes.size());
-        System.out.println("SOIwwwZE"+MainActivity.allUsers.size());
+        System.out.println("SOIZE" + MainActivity.allRecipes.size());
+        System.out.println("SOIwwwZE" + MainActivity.allUsers.size());
 
         for (RegularRecipe recipe : MainActivity.allRecipes) {
             if (recipe.getRecipeID() == recipeID) {
@@ -98,6 +99,7 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
         TextView broughtTime;
         TextView status;
         TextView location;
+
         ViewHolder(View view) {
             super(view);
             recipeName = view.findViewById(R.id.mcr_recipe_name);
@@ -108,7 +110,6 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
 
         }
     }
-
 
 
 }

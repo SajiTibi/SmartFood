@@ -26,16 +26,16 @@ public class ReviewWriteDialog extends DialogFragment {
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.create_review_layout, container, false);
-        reviewedID=  getArguments().getInt(Configs.REVIEWED_ID);
-        System.out.println("will write review to: "+reviewedID);
-        final EditText reviewName =view.findViewById(R.id.review_name_create);
+        reviewedID = getArguments().getInt(Configs.REVIEWED_ID);
+        System.out.println("will write review to: " + reviewedID);
+        final EditText reviewName = view.findViewById(R.id.review_name_create);
         final EditText reviewDescription = view.findViewById(R.id.review_description);
         Button addRecipeButton = view.findViewById(R.id.add_review_btn);
         Button cancelReviewButton = view.findViewById(R.id.cancel_review_button);
         addRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addReview(reviewedID,reviewName.getText().toString(),reviewDescription.getText().toString());
+                addReview(reviewedID, reviewName.getText().toString(), reviewDescription.getText().toString());
 
             }
         });
@@ -61,7 +61,7 @@ public class ReviewWriteDialog extends DialogFragment {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setMessage("Review deleted successfully")
                                 .setPositiveButton
-                                        ("Ok",null)
+                                        ("Ok", null)
                                 .create()
                                 .show();
                         getDialog().dismiss();
@@ -76,8 +76,8 @@ public class ReviewWriteDialog extends DialogFragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put(Configs.REVIEWED_ID, String.valueOf(reviewedID));
-                params.put(Configs.REVIEWER_ID,String.valueOf(MainActivity.loggedUser.getUserID()));
-                params.put(Configs.REVIEW_DESCRIPTION,reviewDescription);
+                params.put(Configs.REVIEWER_ID, String.valueOf(MainActivity.loggedUser.getUserID()));
+                params.put(Configs.REVIEW_DESCRIPTION, reviewDescription);
                 return params;
             }
 

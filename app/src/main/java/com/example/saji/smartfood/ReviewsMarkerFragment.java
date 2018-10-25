@@ -105,8 +105,8 @@ public class ReviewsMarkerFragment extends Fragment {
                             String reviewDate = key.getString(Configs.REVIEW_DATE);
                             UserModel reviewer = findCooker(reviewerID);
                             UserModel reviewed = findCooker(reviewedID);
-                            ReviewModel review = new ReviewModel(reviewID,reviewDescription,
-                                    reviewDate,reviewer,reviewed);
+                            ReviewModel review = new ReviewModel(reviewID, reviewDescription,
+                                    reviewDate, reviewer, reviewed);
                             reviewsList.add(review);
                             reviewsRecyclerViewAdapter.notifyDataSetChanged();
                         }
@@ -128,6 +128,7 @@ public class ReviewsMarkerFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
     }
+
     private UserModel findCooker(int recipeCookerID) {
         for (UserModel user : MainActivity.allUsers) {
             if (user.userID == recipeCookerID) {

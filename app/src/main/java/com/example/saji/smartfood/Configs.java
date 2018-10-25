@@ -17,17 +17,17 @@ public class Configs {
             ".com/RegisterToken.php";
     public static final String TOKEN_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
             ".com/FCMRetriever.php";
-    public static final String ALL_USERS_RETRIEVAL_URL ="https://silicotic-vent.000webhostapp" +
+    public static final String ALL_USERS_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
             ".com/AllUsersRetriever.php";
     public static final String PLACE_ORDER_URL = "https://silicotic-vent.000webhostapp" +
             ".com/PlaceAnOder.php";
     public static final String ORDERS_RETRIEVAL_URL = "https://silicotic-vent.000webhostapp" +
             ".com/CookerOrdersRetriever.php";
-    public static final String UPDATE_LOCATION_URL ="https://silicotic-vent.000webhostapp.com/UpdateLocation.php";
-    public static final String UPDATE_RECIPE_URL ="https://silicotic-vent.000webhostapp" +
+    public static final String UPDATE_LOCATION_URL = "https://silicotic-vent.000webhostapp.com/UpdateLocation.php";
+    public static final String UPDATE_RECIPE_URL = "https://silicotic-vent.000webhostapp" +
             ".com/UpdateRecipe.php";
-    public static final String DELETE_RECIPE_URL ="https://silicotic-vent.000webhostapp.com/DeleteRecipe.php";
-    public static final String UPDATE_ORDER_STATUS_URL ="https://silicotic-vent.000webhostapp" +
+    public static final String DELETE_RECIPE_URL = "https://silicotic-vent.000webhostapp.com/DeleteRecipe.php";
+    public static final String UPDATE_ORDER_STATUS_URL = "https://silicotic-vent.000webhostapp" +
             ".com/UpdateOrderStatus.php";
     public static final String CART_RETRIEVER_URL = "https://silicotic-vent.000webhostapp" +
             ".com/MyCartRetriever.php";

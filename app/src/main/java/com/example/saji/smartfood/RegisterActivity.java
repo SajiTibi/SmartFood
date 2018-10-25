@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     registerButton.setBackground(getDrawable(R.drawable.button_clicked_drawable));
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     registerButton.setBackground(getDrawable(R.drawable.button_unclicked_drawable));
@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
     private void attemptRegister(int userType) {
         StringRequest sr = new RegisterRequest(mEmail.getText().toString(), mPassword1.getText()
-                .toString(), userType,lastLocation, new Response.Listener<String>() {
+                .toString(), userType, lastLocation, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

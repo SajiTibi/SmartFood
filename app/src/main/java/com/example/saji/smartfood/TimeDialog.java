@@ -15,6 +15,7 @@ import me.tom.range.slider.RangeSliderView;
 public class TimeDialog extends DialogFragment {
     private int startHour;
     private int endHour;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.availability_dialog, container, false);
@@ -28,7 +29,7 @@ public class TimeDialog extends DialogFragment {
         rangeSliderView.setOnValueChangedListener(new RangeSliderView.OnValueChangedListener() {
             @Override
             public void onValueChanged(int minValue, int maxValue) {
-                startHour= minValue;
+                startHour = minValue;
                 endHour = maxValue;
             }
 

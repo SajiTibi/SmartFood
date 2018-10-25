@@ -6,15 +6,16 @@ public class OrderModule {
     private String purchaseTime;
     private int recipeID;
     private int state;
-    public OrderModule(int orderID,int recipeID, int recipePurchaserID, String purchaseTime, int state){
-    this.orderID = orderID;
-    this.recipeID=recipeID;
-    this.recipePurchaserID = recipePurchaserID;
-    this.purchaseTime = purchaseTime;
-    this.state = state;
+
+    public OrderModule(int orderID, int recipeID, int recipePurchaserID, String purchaseTime, int state) {
+        this.orderID = orderID;
+        this.recipeID = recipeID;
+        this.recipePurchaserID = recipePurchaserID;
+        this.purchaseTime = purchaseTime;
+        this.state = state;
     }
 
-    public int getOrderID(){
+    public int getOrderID() {
         return orderID;
     }
 

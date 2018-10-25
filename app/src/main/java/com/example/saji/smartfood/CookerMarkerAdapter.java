@@ -25,68 +25,68 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CookerMarkerAdapter extends RecyclerView.Adapter<CookerMarkerAdapter.ViewHolder> {
-        private LayoutInflater mInflater;
-        ArrayList<RegularRecipe> dishesModelArrayList;
-        private int cookerID;
+    private LayoutInflater mInflater;
+    ArrayList<RegularRecipe> dishesModelArrayList;
+    private int cookerID;
 
-        public CookerMarkerAdapter(Context context, ArrayList<RegularRecipe> dishesModelArrayList, int cookerID) {
-            this.dishesModelArrayList = dishesModelArrayList;
-            mInflater = LayoutInflater.from(context);
-            this.cookerID = cookerID;
-        }
+    public CookerMarkerAdapter(Context context, ArrayList<RegularRecipe> dishesModelArrayList, int cookerID) {
+        this.dishesModelArrayList = dishesModelArrayList;
+        mInflater = LayoutInflater.from(context);
+        this.cookerID = cookerID;
+    }
 
-        @Override
-        public com.example.saji.smartfood.CookerMarkerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = mInflater.inflate(R.layout.cooker_marker_row, parent, false);
+    @Override
+    public com.example.saji.smartfood.CookerMarkerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.cooker_marker_row, parent, false);
 
-            return new com.example.saji.smartfood.CookerMarkerAdapter.ViewHolder(view);
-        }
+        return new com.example.saji.smartfood.CookerMarkerAdapter.ViewHolder(view);
+    }
 
-        @SuppressLint("ClickableViewAccessibility")
-        @Override
-        public void onBindViewHolder(final com.example.saji.smartfood.CookerMarkerAdapter.ViewHolder holder, int position) {
-            RegularRecipe currentRecipe = dishesModelArrayList.get(position);
-            holder.dishName.setText(currentRecipe.getRecipeName());
-            holder.dishDescription.setText(currentRecipe.getRecipeDescription());
-            holder.dishCooker.setText(currentRecipe.getRecipeCooker().getEmailAddress());
-            holder.dishPrice.setText(String.valueOf(currentRecipe.getRecipePrice()));
-            holder.dishID = currentRecipe.getRecipeID();
-            holder.purchaseButton.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        holder.purchaseButton.setBackground(mInflater.getContext().getDrawable(R.drawable.button_clicked_drawable));
-                        placeAnOrder(holder.dishID, MainActivity.loggedUser.getUserID(), cookerID);
-                    } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        holder.purchaseButton.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
-                    }
-                    return false;
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public void onBindViewHolder(final com.example.saji.smartfood.CookerMarkerAdapter.ViewHolder holder, int position) {
+        RegularRecipe currentRecipe = dishesModelArrayList.get(position);
+        holder.dishName.setText(currentRecipe.getRecipeName());
+        holder.dishDescription.setText(currentRecipe.getRecipeDescription());
+        holder.dishCooker.setText(currentRecipe.getRecipeCooker().getEmailAddress());
+        holder.dishPrice.setText(String.valueOf(currentRecipe.getRecipePrice()));
+        holder.dishID = currentRecipe.getRecipeID();
+        holder.purchaseButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    holder.purchaseButton.setBackground(mInflater.getContext().getDrawable(R.drawable.button_clicked_drawable));
+                    placeAnOrder(holder.dishID, MainActivity.loggedUser.getUserID(), cookerID);
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    holder.purchaseButton.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
                 }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return dishesModelArrayList.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView dishName;
-            TextView dishCooker;
-            TextView dishDescription;
-            int dishID;
-            TextView dishPrice;
-            Button purchaseButton;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                dishName = itemView.findViewById(R.id.recipe_name);
-                dishCooker = itemView.findViewById(R.id.recipe_cooker);
-                dishDescription = itemView.findViewById(R.id.recipe_description);
-                dishPrice = itemView.findViewById(R.id.recipe_price);
-                purchaseButton = itemView.findViewById(R.id.recipe_order_button);
+                return false;
             }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return dishesModelArrayList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView dishName;
+        TextView dishCooker;
+        TextView dishDescription;
+        int dishID;
+        TextView dishPrice;
+        Button purchaseButton;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            dishName = itemView.findViewById(R.id.recipe_name);
+            dishCooker = itemView.findViewById(R.id.recipe_cooker);
+            dishDescription = itemView.findViewById(R.id.recipe_description);
+            dishPrice = itemView.findViewById(R.id.recipe_price);
+            purchaseButton = itemView.findViewById(R.id.recipe_order_button);
         }
+    }
 
     private void placeAnOrder(final int recipeID, final int recipePurchaserID, final int recipeCookerID) {
         StringRequest addRecipeSR = new StringRequest(Request.Method.POST, Configs

@@ -50,6 +50,7 @@ public class AboutTab extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final int addressVisibility = (MainActivity.loggedUser.getUserType() == Configs.UserType.COOKER) ? View.VISIBLE : View.GONE;
         View view = inflater.inflate(R.layout.about_tab, container, false);
         TextView userID = view.findViewById(R.id.user_id);
         TextView userEmail = view.findViewById(R.id.user_email);
@@ -91,6 +92,7 @@ public class AboutTab extends Fragment {
             e.printStackTrace();
         }
         final Button changeToSuggestedButton = view.findViewById(R.id.change_to_this_location_button);
+        changeToSuggestedButton.setVisibility(addressVisibility);
         changeToSuggestedButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -109,6 +111,9 @@ public class AboutTab extends Fragment {
         });
 
         final Button updateMyLocationButton = view.findViewById(R.id.update_location);
+        updateMyLocationButton.setVisibility(addressVisibility);
+        enterLocation.setVisibility(addressVisibility);
+        view.findViewById(R.id.suggested_location).setVisibility(addressVisibility);
         updateMyLocationButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
