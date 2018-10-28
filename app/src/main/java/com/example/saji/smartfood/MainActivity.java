@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         double userLatitude = extras.getDouble(Configs.USER_LATITUDE);
 
         PAGE_TITLES = (userType == Configs.USER_COOKER_ID) ? new String[]{"Food Map", "My Cart",
-                "Dishes", "My Reviews", "Orders", "About"} : new String[]{"Food Map", "My Cart", "About"};
+                "My Dishes", "My Reviews", "Orders", "About"} : new String[]{"Food Map", "My Cart", "About"};
         loggedUser = new UserModel(userID, emailAddress, userType, fcmToken, userLongitude, userLatitude);
 
         // to update FCM if outdated

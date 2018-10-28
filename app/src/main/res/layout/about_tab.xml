@@ -37,18 +37,21 @@
         android:textSize="15sp"
         android:layout_marginTop="30dp"
         android:hint="New Location Address"
+        android:textAlignment="center"
         android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/suggested_location"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:singleLine="false"
         android:textSize="12sp"
         android:text="Suggested location:" />
 
     <Button
         android:id="@+id/update_location"
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="35dp"
         android:layout_marginTop="15dp"
         android:textSize="14sp"
@@ -59,11 +62,12 @@
 
     <Button
         android:id="@+id/change_to_this_location_button"
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="35dp"
         android:textSize="14sp"
         android:layout_marginTop="15dp"
         android:textAllCaps="false"
+        android:textAlignment="center"
         android:background="@drawable/button_unclicked_drawable"
         android:text="Set Current Location"
         />
@@ -75,6 +79,7 @@
         android:textAllCaps="false"
         android:layout_height="35dp"
         android:textSize="20sp"
+        android:textAlignment="center"
         android:background="@drawable/dialog_button_unclicked_drawable"
         android:text="Logout" />
 
