@@ -9,7 +9,7 @@ public class ReviewModel {
 
     public ReviewModel(int reviewID, String reviewBody, String reviewDate, UserModel reviewer, UserModel reviewed) {
         this.reviewBody = reviewBody;
-        this.reviewDate = reviewDate;
+        this.reviewDate = reviewDate.substring(0, 16);
         this.reviewID = reviewID;
         this.reviewer = reviewer;
         this.reviewed = reviewed;

@@ -27,9 +27,12 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
     private Context context;
     private LayoutInflater mInflater;
     private Geocoder geocoder;
+    public static ArrayList<RegularRecipe> allRecipes;
 
     public OrderedRecipeAdapter(Context context, ArrayList<OrderModule> orderModuleArrayList) {
         this.context = context;
+        allRecipes = new ArrayList<>();
+        loadAllRecipes();
         mInflater = LayoutInflater.from(context);
         this.orderModuleArrayList = orderModuleArrayList;
         geocoder = new Geocoder(context);
@@ -48,6 +51,7 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
         OrderModule currOrder = orderModuleArrayList.get(position);
         RegularRecipe currRecipe = findRecipe(currOrder.getRecipeID());
         if (currRecipe == null) {
+            System.out.println("Null recipe");
             return;
         }
         String locationName = "";
@@ -77,10 +81,10 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
     }
 
     private RegularRecipe findRecipe(int recipeID) {
-        System.out.println("SOIZE" + MainActivity.allRecipes.size());
+        System.out.println("SOIZE" + allRecipes.size());
         System.out.println("SOIwwwZE" + MainActivity.allUsers.size());
 
-        for (RegularRecipe recipe : MainActivity.allRecipes) {
+        for (RegularRecipe recipe : allRecipes) {
             if (recipe.getRecipeID() == recipeID) {
                 return recipe;
             }
@@ -110,6 +114,58 @@ public class OrderedRecipeAdapter extends RecyclerView.Adapter<OrderedRecipeAdap
 
         }
     }
+    private void loadAllRecipes() {
+        StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
+                .ALL_RECIPES_RETRIEVAL_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
 
+                    // we got response as json array within nesed json array so we iterate
+                    // throught them all to get all recipes
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        allRecipes.clear();
+                        Iterator keyz = jsonResponse.keys();
+                        keyz.next();
+                        while (keyz.hasNext()) {
+                            JSONObject key = jsonResponse.getJSONObject((String) keyz.next());
+
+                            String recipeName = key.getString(Configs.RECIPE_NAME);
+                            String recipeDescription = key.getString(Configs.RECIPE_DESCRIPTION);
+                            double recipePrice = key.getDouble(Configs.RECIPE_PRICE);
+                            int recipeCookerID = key.getInt(Configs.RECIPE_COOKER_ID);
+                            int recipeID = key.getInt(Configs.RECIPE_ID);
+                            UserModel cooker = findCooker(recipeCookerID);
+                            if (cooker == null) {
+                                System.out.println("ID" + recipeCookerID);
+                                System.out.println("Cant find cooker in all users");
+                                return;
+                            }
+                            RegularRecipe recipe = new RegularRecipe(recipeID, recipeCookerID,
+                                    recipeName, cooker, recipeDescription, recipePrice, cooker.getUserLongitude(),
+                                    cooker.getUserLatitude());
+                            allRecipes.add(recipe);
+                            notifyDataSetChanged();
+                        }
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+        }, null);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(recipesRequest);
+
+    }
+    private UserModel findCooker(int recipeCookerID) {
+        for (UserModel user : MainActivity.allUsers) {
+            if (user.userID == recipeCookerID) {
+                return user;
+            }
+        }
+        return null;
+    }
 
 }

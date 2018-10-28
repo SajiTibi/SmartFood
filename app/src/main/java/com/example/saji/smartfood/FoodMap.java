@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -327,6 +328,7 @@ public class FoodMap extends Fragment implements OnMapReadyCallback, LocationLis
                     currDialog.setCookerID(Integer.valueOf(cookerID));
                     currDialog.setCookerDishes(cookersDishes.get(Integer.valueOf(cookerID)));
                     currDialog.show(getFragmentManager(), "CookerMarkerDialog");
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 }
             });
             return myContestView;

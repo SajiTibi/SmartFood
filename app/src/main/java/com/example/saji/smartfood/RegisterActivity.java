@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
      * @param userType 1 is foodie, 0 is cooker
      */
     private void attemptRegister(int userType) {
-        StringRequest sr = new RegisterRequest(mEmail.getText().toString(), mPassword1.getText()
+        StringRequest sr = new RegisterRequest(mEmail.getText().toString().toLowerCase(), mPassword1.getText()
                 .toString(), userType, lastLocation, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

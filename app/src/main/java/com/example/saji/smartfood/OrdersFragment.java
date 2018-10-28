@@ -68,10 +68,12 @@ public class OrdersFragment extends Fragment {
                             int recipeID = key.getInt(Configs.RECIPE_ID);
                             int purchaserID = key.getInt(Configs.RECIPE_PURCHASER_ID);
                             int orderStatus = key.getInt(Configs.ORDER_STATUS);
-                            OrderModule newOrder = new OrderModule(orderID, recipeID, purchaserID,
-                                    purchaseTime, orderStatus);
-                            ordersModelArrayList.add(newOrder);
-                            ordersRecyclerViewAdapter.notifyDataSetChanged();
+                            if(orderStatus != Integer.valueOf(Configs.ORDER_STATUS_REJECTED)) {
+                                OrderModule newOrder = new OrderModule(orderID, recipeID, purchaserID,
+                                        purchaseTime, orderStatus);
+                                ordersModelArrayList.add(newOrder);
+                                ordersRecyclerViewAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 } catch (JSONException e) {

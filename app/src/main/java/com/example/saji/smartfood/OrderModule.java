@@ -11,7 +11,7 @@ public class OrderModule {
         this.orderID = orderID;
         this.recipeID = recipeID;
         this.recipePurchaserID = recipePurchaserID;
-        this.purchaseTime = purchaseTime;
+        this.purchaseTime = purchaseTime.substring(0, 16);
         this.state = state;
     }
 

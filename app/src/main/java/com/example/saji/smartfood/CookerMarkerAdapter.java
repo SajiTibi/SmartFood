@@ -2,6 +2,7 @@ package com.example.saji.smartfood;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,9 +99,19 @@ public class CookerMarkerAdapter extends RecyclerView.Adapter<CookerMarkerAdapte
                     jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mInflater.getContext());
+                        builder.setMessage("Ordered Successfully!").setPositiveButton
+                                ("Ok", null)
+                                .create()
+                                .show();
                         System.out.println("Recipe added successfully");
                     }
                 } catch (JSONException e) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mInflater.getContext());
+                    builder.setMessage("Failed to Order!").setPositiveButton
+                            ("Ok", null)
+                            .create()
+                            .show();
                     e.printStackTrace();
                 }
             }

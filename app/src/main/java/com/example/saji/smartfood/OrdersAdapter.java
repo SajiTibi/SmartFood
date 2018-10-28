@@ -54,6 +54,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
         // when its loaded in adapter. also see File:Configs ORDER_STATUS_ACCEPTED and other
         // variables if its matches your definition (as 0,1,2).
+//        if(state == Integer.valueOf(Configs.ORDER_STATUS_REJECTED)) { holder
 
         final Integer ACCE_REJ_BUTTON_VISIBILITY = (state == Integer.valueOf(Configs.ORDER_STATUS_PENDING)) ? View.VISIBLE : View.GONE;
         final Integer FINISH_BUTTON_VISIBILITY = (state == Integer.valueOf(Configs.ORDER_STATUS_ACCEPTED)) ? View.VISIBLE : View.GONE;
@@ -64,8 +65,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         holder.finishOrder.setVisibility(FINISH_BUTTON_VISIBILITY);
         holder.doneOrder.setVisibility(DONE_BUTTON_VISIBILITY);
 
+        holder.orderCreator.setText(findUserName(orderModule.getRecipePurchaserID()));
 
-        holder.orderCreator.setText(String.valueOf(orderModule.getRecipePurchaserID()));
         holder.orderPurchaseTime.setText(orderModule.getPurchaseTime());
 
 
@@ -95,6 +96,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     holder.rejectOrder.setBackground(mInflater.getContext().getDrawable(R.drawable.button_unclicked_drawable));
+
                 }
                 return false;
             }
@@ -132,6 +134,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
     }
 
+    private String findUserName(int userID) {
+        for(UserModel currUser: MainActivity.allUsers) {
+            if(currUser.userID == userID){
+                return currUser.emailAddress;
+            }
+        }
+        return "";
+    }
     /**
      * @param orderID    order id
      * @param orderIndex order index to remove from ArrayList
@@ -172,7 +182,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         requestQueue.add(recipesRequest);
     }
 
-    private void updateOrderStatus(final int orderID, final String newOrderStatus, int orderIndex) {
+    private void updateOrderStatus(final int orderID, final String newOrderStatus, final int orderIndex) {
         StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
                 .UPDATE_ORDER_STATUS_URL, new Response.Listener<String>() {
             @Override
@@ -180,8 +190,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                        System.out.println("success");
+                    if (success && newOrderStatus.equals(Configs.ORDER_STATUS_REJECTED)) {
+                        ordersModelArrayList.remove(orderIndex);
+                        notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
 

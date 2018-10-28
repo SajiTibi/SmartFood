@@ -1,9 +1,11 @@
 package com.example.saji.smartfood;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,42 +26,55 @@ import java.util.Map;
 public class ReviewWriteDialog extends DialogFragment {
     int reviewedID;
 
+    @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.create_review_layout, container, false);
         reviewedID = getArguments().getInt(Configs.REVIEWED_ID);
         System.out.println("will write review to: " + reviewedID);
-        final EditText reviewName = view.findViewById(R.id.review_name_create);
         final EditText reviewDescription = view.findViewById(R.id.review_description);
-        Button addRecipeButton = view.findViewById(R.id.add_review_btn);
-        Button cancelReviewButton = view.findViewById(R.id.cancel_review_button);
-        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+        final Button addReviewButton = view.findViewById(R.id.add_review_btn);
+        final Button cancelReviewButton = view.findViewById(R.id.cancel_review_button);
+        addReviewButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                addReview(reviewedID, reviewName.getText().toString(), reviewDescription.getText().toString());
-
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    addReviewButton.setBackground(getActivity().getDrawable(R.drawable.dialog_button_clicked_drawable));
+                    addReview(reviewedID, reviewDescription.getText().toString());
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    addReviewButton.setBackground(getActivity().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                }
+                return false;
             }
         });
-        cancelReviewButton.setOnClickListener(new View.OnClickListener() {
+
+        cancelReviewButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                getDialog().dismiss();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    cancelReviewButton.setBackground(getActivity().getDrawable(R.drawable.dialog_button_clicked_drawable));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    cancelReviewButton.setBackground(getActivity().getDrawable(R.drawable.dialog_button_unclicked_drawable));
+                    getDialog().dismiss();
+                }
+                return false;
             }
         });
         return view;
     }
 
-    private void addReview(final int reviewedID, final String reviewName, final String reviewDescription) {
+    private void addReview(final int reviewedID, final String reviewDescription) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Configs
                 .REVIEW_ADD_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 JSONObject jsonResponse;
                 try {
+                    System.out.printf(response);
                     jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Review deleted successfully")
+                        builder.setMessage("Review Added Successfully")
                                 .setPositiveButton
                                         ("Ok", null)
                                 .create()
