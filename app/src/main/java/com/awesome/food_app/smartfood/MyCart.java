@@ -64,6 +64,8 @@ public class MyCart extends Fragment {
                                     purchaseTime, orderStatus);
                             ordersModelArrayList.add(newOrder);
                             ordersRecyclerViewAdapter.notifyDataSetChanged();
+                            System.out.println(orderID);
+                            System.out.println("New size:"+ordersModelArrayList.size());
                         }
                     }
                 } catch (JSONException e) {

@@ -22,17 +22,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
     ArrayList<OrderModule> ordersModelArrayList;
     private LayoutInflater mInflater;
     private Context context;
+    public static ArrayList<RegularRecipe> allRecipes;
 
     public OrdersAdapter(Context context, ArrayList<OrderModule> ordersModelArrayList) {
+        this.context = context;
+
+        allRecipes = new ArrayList<>();
+        loadAllRecipes();
         this.ordersModelArrayList = ordersModelArrayList;
         mInflater = LayoutInflater.from(context);
-        this.context = context;
     }
 
     @Override
@@ -47,7 +52,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final OrderModule orderModule = ordersModelArrayList.get(position);
         int state = orderModule.getState();
-
+        RegularRecipe currRecipe = findRecipe(orderModule.getRecipeID());
+        if (currRecipe == null) {
+            System.out.println("Null recipe");
+            return;
+        }
+        holder.orderRecipeName.setText(currRecipe.getRecipeName());
         // when its loaded in adapter. also see File:Configs ORDER_STATUS_ACCEPTED and other
         // variables if its matches your definition (as 0,1,2).
 //        if(state == Integer.valueOf(Configs.ORDER_STATUS_REJECTED)) { holder
@@ -128,6 +138,72 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             }
         });
 
+    }
+    private RegularRecipe findRecipe(int recipeID) {
+        System.out.println("SOIZE" + allRecipes.size());
+        System.out.println("SOIwwwZE" + MainActivity.allUsers.size());
+
+        for (RegularRecipe recipe : allRecipes) {
+            if (recipe.getRecipeID() == recipeID) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+
+    private void loadAllRecipes() {
+        StringRequest recipesRequest = new StringRequest(Request.Method.POST, Configs
+                .ALL_RECIPES_RETRIEVAL_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    // we got response as json array within nesed json array so we iterate
+                    // throught them all to get all recipes
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        allRecipes.clear();
+                        Iterator keyz = jsonResponse.keys();
+                        keyz.next();
+                        while (keyz.hasNext()) {
+                            JSONObject key = jsonResponse.getJSONObject((String) keyz.next());
+
+                            String recipeName = key.getString(Configs.RECIPE_NAME);
+                            String recipeDescription = key.getString(Configs.RECIPE_DESCRIPTION);
+                            double recipePrice = key.getDouble(Configs.RECIPE_PRICE);
+                            int recipeCookerID = key.getInt(Configs.RECIPE_COOKER_ID);
+                            int recipeID = key.getInt(Configs.RECIPE_ID);
+                            UserModel cooker = findCooker(recipeCookerID);
+                            if (cooker == null) {
+                                System.out.println("ID" + recipeCookerID);
+                                System.out.println("Cant find cooker in all users");
+                                return;
+                            }
+                            RegularRecipe recipe = new RegularRecipe(recipeID, recipeCookerID,
+                                    recipeName, cooker, recipeDescription, recipePrice, cooker.getUserLongitude(),
+                                    cooker.getUserLatitude());
+                            allRecipes.add(recipe);
+                            notifyDataSetChanged();
+                        }
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+        }, null);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(recipesRequest);
+
+    }
+    private UserModel findCooker(int recipeCookerID) {
+        for (UserModel user : MainActivity.allUsers) {
+            if (user.userID == recipeCookerID) {
+                return user;
+            }
+        }
+        return null;
     }
 
     private String findUserName(int userID) {
@@ -216,6 +292,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView orderCreator;
         TextView orderPurchaseTime;
+        TextView orderRecipeName;
         Button finishOrder;
         Button acceptOrder;
         Button rejectOrder;
@@ -225,6 +302,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             super(itemView);
             orderCreator = itemView.findViewById(R.id.order_creator);
             orderPurchaseTime = itemView.findViewById(R.id.order_purchase_time);
+            orderRecipeName = itemView.findViewById(R.id.order_recipe_name);
             finishOrder = itemView.findViewById(R.id.finish_order);
             rejectOrder = itemView.findViewById(R.id.reject_order);
             acceptOrder = itemView.findViewById(R.id.accept_order);

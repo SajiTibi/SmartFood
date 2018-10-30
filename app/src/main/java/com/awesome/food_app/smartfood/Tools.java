@@ -8,7 +8,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,12 +47,12 @@ public class Tools {
                         keyz.next(); // to avoid first element which is success boolean
                         while (keyz.hasNext()) {
                             JSONObject key = jsonResponse.getJSONObject((String) keyz.next());
-                            String loadedFCMToken = key.getString(Configs.FIREBASE_TOKEN);
-                            String currentFCMToken = FirebaseInstanceId.getInstance().getToken();
-                            // if we have outdated fcm we add the new one
-                            if (!loadedFCMToken.equals(currentFCMToken)) {
-                                registerToken(currentFCMToken);
-                            }
+                         //   String loadedFCMToken = key.getString(Configs.FIREBASE_TOKEN);
+//                            String currentFCMToken = FirebaseInstanceId.getInstance().getToken();
+//                            // if we have outdated fcm we add the new one
+//                            if (!loadedFCMToken.equals(currentFCMToken)) {
+//                                registerToken(currentFCMToken);
+//                            }
                         }
                     }
                 } catch (JSONException e) {
